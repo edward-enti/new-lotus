@@ -3,34 +3,29 @@
   <div class="container">
     <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Trang chủ</a><span>/</span><span>Tính lượng sơn</span></nav>
     <h1>Tính lượng sơn</h1>
-    <p>Nhập diện tích cần sơn, số lớp sơn và độ phủ của sản phẩm để tính lượng sơn cần dùng (đã cộng 5% hao hụt).</p>
+    <p>Nhập diện tích, số lớp và độ phủ để ước tính lượng sơn cần dùng — kết quả đã cộng 5% hao hụt và gợi ý đóng gói phù hợp.</p>
   </div>
 </section>
 <section class="section">
   <div class="container">
-    <form hx-post="/api/htmx/tinh-luong-son" hx-target="#calc-result-page" class="form-card" style="max-width:720px">
+    <form hx-post="/api/htmx/tinh-luong-son" hx-target="#calc-result" class="form-card" style="max-width:760px">
       <div>
-        <label class="field-label" for="calc-area">Diện tích (m²)</label>
-        <input id="calc-area" name="dien-tich" type="number" step="any" min="0" required class="field-input">
+        <label class="field-label" for="area">Diện tích (m²)</label>
+        <input id="area" name="dien-tich" type="number" step="any" min="0" required class="field-input" value="{{if .Data.AreaM2}}{{printf "%.2f" .Data.AreaM2}}{{end}}">
       </div>
       <div>
-        <label class="field-label" for="calc-coats">Số lớp sơn</label>
-        <input id="calc-coats" name="so-lop" type="number" min="1" value="2" required class="field-input">
+        <label class="field-label" for="coats">Số lớp sơn</label>
+        <input id="coats" name="so-lop" type="number" min="1" value="{{if .Data.Coats}}{{.Data.Coats}}{{else}}2{{end}}" required class="field-input">
       </div>
       <div>
-        <label class="field-label" for="calc-product">Sản phẩm (độ phủ tự động)</label>
-        <select id="calc-product" name="san-pham" class="field-input">
-          <option value="">— Nhập độ phủ thủ công —</option>
-          {{range .Data.Products}}<option value="{{.Slug}}">{{.Name}} ({{.CoverageRate}} m²/lít)</option>{{end}}
-        </select>
-      </div>
-      <div>
-        <label class="field-label" for="calc-coverage">Độ phủ (m²/lít)</label>
-        <input id="calc-coverage" name="do-phu" type="number" step="any" min="0.1" class="field-input">
+        <label class="field-label" for="coverage">Độ phủ (m²/lít)</label>
+        <input id="coverage" name="do-phu" type="number" step="any" min="0.1" value="{{if .Data.Coverage}}{{printf "%.1f" .Data.Coverage}}{{else}}10{{end}}" required class="field-input">
       </div>
       <button type="submit" class="btn btn-primary">Tính lượng sơn</button>
     </form>
-    <div id="calc-result-page" style="margin-top:1rem;max-width:720px"></div>
+    <div id="calc-result" style="margin-top:16px;max-width:760px">
+      {{if .Data.Calculated}}{{template "calculator_result" .Data}}{{end}}
+    </div>
   </div>
 </section>
 {{end}}

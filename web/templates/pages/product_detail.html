@@ -1,132 +1,118 @@
 {{define "content"}}
-<section class="section" style="padding-top:calc(var(--chrome-h) + 2rem)">
+<section class="section">
   <div class="container">
     <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Trang chủ</a><span>/</span><a href="/san-pham">Sản phẩm</a><span>/</span><span>{{.Data.Product.Name}}</span></nav>
-    <div class="pd-layout">
+    <div class="pd-layout" style="margin-top:20px">
       <div class="pd-gallery">
         {{if .Data.Product.ThumbnailURL}}
         <picture>
-          <source srcset="{{webpURL .Data.Product.ThumbnailURL}}" type="image/webp">
-          <img src="{{.Data.Product.ThumbnailURL}}" alt="{{.Data.Product.Name}}" loading="lazy" class="pd-main-img">
+          {{if webpURL .Data.Product.ThumbnailURL}}<source srcset="{{webpURL .Data.Product.ThumbnailURL}}" type="image/webp">{{end}}
+          <img class="pd-main-img" src="{{.Data.Product.ThumbnailURL}}" alt="{{.Data.Product.Name}}">
         </picture>
         {{else}}
-        <div class="category-visual" style="min-height:340px">
+        <div class="category-visual" style="min-height:380px">
           {{$v := "visual-woodgrain"}}
           {{if eq .Data.Product.CategorySlug "son-go-he-nuoc"}}{{$v = "visual-wood"}}{{else if eq .Data.Product.CategorySlug "son-kim-loai-he-nuoc"}}{{$v = "visual-metal"}}{{else if eq .Data.Product.CategorySlug "son-loa"}}{{$v = "visual-speaker"}}{{end}}
           <div class="{{$v}}"></div>
-          <div class="visual-label"><strong>{{.Data.Product.Name}}</strong><span>{{.Data.Product.CategoryName}}</span></div>
+          {{if eq .Data.Product.CategorySlug "son-loa"}}<div class="speaker-cone big"></div><div class="speaker-cone small"></div>{{end}}
         </div>
-        {{end}}
-        {{range .Data.Product.Images}}
-        <picture>
-          <source srcset="{{webpURL .}}" type="image/webp">
-          <img src="{{.}}" alt="" loading="lazy" class="pd-thumb">
-        </picture>
         {{end}}
       </div>
       <div class="pd-info">
-        <p class="section-eyebrow">{{.Data.Product.CategoryName}}</p>
         <h1>{{.Data.Product.Name}}</h1>
-        <p>{{.Data.Product.ShortSummary}}</p>
-        <p><strong>Độ phủ:</strong> {{.Data.Product.CoverageRate}} m²/lít · <strong>Vai trò:</strong> {{.Data.Product.CoatingRole}} · <strong>Độ bóng:</strong> {{.Data.Product.FinishType}}</p>
-        {{if .Data.Product.Packaging}}
-        <div>
-          <p class="field-label">Quy cách đóng gói</p>
-          <div style="display:flex;gap:.5rem;flex-wrap:wrap">
-            {{range .Data.Product.Packaging}}<button type="button" class="volume-chip">{{.}}</button>{{end}}
-          </div>
+        <p style="color:var(--muted)">{{.Data.Product.ShortSummary}}</p>
+        {{if .Data.Product.Features}}
+        <div class="product-card-features" style="margin:12px 0">
+          {{range .Data.Product.Features}}<span class="product-feature-chip">{{.}}</span>{{end}}
         </div>
         {{end}}
-        <div style="display:flex;gap:.75rem;flex-wrap:wrap;margin-top:1.5rem">
+        <table class="spec-table">
+          <tr><th>Mã sản phẩm</th><td>{{.Data.Product.SKU}}</td></tr>
+          <tr><th>Vai trò</th><td>{{.Data.Product.CoatingRole}}</td></tr>
+          <tr><th>Độ bóng</th><td>{{.Data.Product.FinishType}}</td></tr>
+          <tr><th>Khu vực</th><td>{{.Data.Product.UsageArea}}</td></tr>
+          <tr><th>Độ phủ</th><td>{{printf "%.1f" .Data.Product.CoverageRate}} m²/lít</td></tr>
+        </table>
+        {{if .Data.Product.Colors}}
+        <h2 style="font-size:1.1rem;margin:24px 0 12px">Bảng màu</h2>
+        <div style="display:flex;gap:16px;flex-wrap:wrap" x-data="{ selected: '{{index .Data.Product.Colors 0}}' }">
+          {{range .Data.Product.Colors}}
+          <button type="button" class="swatch-item" style="border:0;background:none;padding:0;cursor:pointer" @click="selected = '{{.Name}}'">
+            <span class="swatch-circle" style="background:{{.Hex}}"></span>
+            <span class="swatch-name">{{.Name}}</span>
+            {{if .Code}}<span class="swatch-code">{{.Code}}</span>{{end}}
+          </button>
+          {{end}}
+        </div>
+        {{end}}
+        {{if .Data.Product.Packaging}}
+        <h2 style="font-size:1.1rem;margin:24px 0 12px">Đóng gói</h2>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          {{range .Data.Product.Packaging}}<span class="product-feature-chip" style="font-size:.9rem;padding:8px 14px">{{.}}</span>{{end}}
+        </div>
+        {{end}}
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:24px">
           <a href="/lien-he" class="btn btn-primary">Nhận Báo Giá</a>
           <a href="/lien-he" class="btn btn-outline">Nhận mẫu miễn phí</a>
+          <a href="/cong-cu/tinh-luong-son" class="btn btn-outline">Tính lượng sơn</a>
         </div>
-        {{if .Data.Product.TDSFileURL}}<p style="margin-top:1rem"><a href="{{.Data.Product.TDSFileURL}}">Tải TDS (Technical Data Sheet)</a></p>{{end}}
-        {{if .Data.Product.MSDSFileURL}}<p><a href="{{.Data.Product.MSDSFileURL}}">Tải MSDS (Safety Data Sheet)</a></p>{{end}}
       </div>
     </div>
-
-    {{if .Data.Product.Colors}}
-    <section class="section" x-data="{ active: '{{(index .Data.Product.Colors 0).Hex}}', activeName: '{{(index .Data.Product.Colors 0).Name}}' }">
-      <div class="pd-section-header">
-        <p class="section-eyebrow">Bảng màu</p>
-        <h2 class="pd-section-title">Màu sắc</h2>
-      </div>
-      <div style="display:flex;gap:.75rem;flex-wrap:wrap">
-      {{range .Data.Product.Colors}}
-        <button type="button" class="swatch-item" style="background:none;border:0;padding:0" @click="active = '{{.Hex}}'; activeName = '{{.Name}}'" title="{{.Name}} ({{.Code}})" aria-label="Màu {{.Name}}">
-          <span class="swatch-circle" style="background-color:{{.Hex}}"></span>
-          <span class="swatch-code">{{.Code}}</span>
-          <span class="swatch-name">{{.Name}}</span>
-        </button>
-      {{end}}
-      </div>
-      <p style="margin-top:1rem">Màu đang chọn: <strong x-text="activeName"></strong> (<span x-text="active"></span>)</p>
-    </section>
-    {{end}}
-
-    <section class="section">
-      <div class="pd-section-header">
-        <p class="section-eyebrow">Thông số kỹ thuật</p>
-        <h2 class="pd-section-title">Thông số &amp; đặc tính</h2>
-      </div>
-      <table class="spec-table">
-        <tr><th>Độ phủ</th><td>{{.Data.Product.CoverageRate}} m²/lít</td></tr>
-        <tr><th>Vai trò</th><td>{{.Data.Product.CoatingRole}}</td></tr>
-        <tr><th>Độ bóng</th><td>{{.Data.Product.FinishType}}</td></tr>
-        <tr><th>Khu vực</th><td>{{.Data.Product.UsageArea}}</td></tr>
-        {{if .Data.Product.Specs.Dilution}}<tr><th>Pha loãng</th><td>{{.Data.Product.Specs.Dilution}}</td></tr>{{end}}
-        {{if .Data.Product.Specs.RecommendedCoats}}<tr><th>Số lớp khuyên dùng</th><td>{{.Data.Product.Specs.RecommendedCoats}}</td></tr>{{end}}
-        {{if .Data.Product.Specs.DryTimeTouchMins}}<tr><th>Khô bề mặt</th><td>{{.Data.Product.Specs.DryTimeTouchMins}} phút</td></tr>{{end}}
-      </table>
-      {{if .Data.Product.Features}}
-      <ul>
-      {{range .Data.Product.Features}}<li>{{.}}</li>{{end}}
-      </ul>
-      {{end}}
-    </section>
-
-    <section class="section">
-      <div class="pd-section-header">
-        <p class="section-eyebrow">Mô tả</p>
-        <h2 class="pd-section-title">Mô tả sản phẩm</h2>
-      </div>
-      <p>{{.Data.Product.DescriptionHTML}}</p>
-      {{if .Data.Product.ApplicationGuideHTML}}
-      <h2>Hướng dẫn thi công</h2>
-      <p>{{.Data.Product.ApplicationGuideHTML}}</p>
-      {{end}}
-    </section>
-
-    <section class="section">
-      <div class="pd-section-header">
-        <p class="section-eyebrow">Công cụ</p>
-        <h2 class="pd-section-title">Tính lượng sơn cho sản phẩm này</h2>
-      </div>
-      <form hx-post="/api/htmx/tinh-luong-son" hx-target="#calc-result-product" class="form-card">
-        <div>
-          <label class="field-label" for="pd-area">Diện tích (m²)</label>
-          <input id="pd-area" name="dien-tich" type="number" step="any" min="0" required class="field-input">
-        </div>
-        <div>
-          <label class="field-label" for="pd-coats">Số lớp sơn</label>
-          <input id="pd-coats" name="so-lop" type="number" min="1" value="2" required class="field-input">
-        </div>
-        <input type="hidden" name="do-phu" value="{{.Data.Product.CoverageRate}}">
-        <button type="submit" class="btn btn-primary">Tính lượng sơn</button>
-      </form>
-      <div id="calc-result-product" style="margin-top:1rem"></div>
-    </section>
-
-    {{if .Data.Related}}
-    <section class="section">
-      <div class="pd-section-header">
-        <p class="section-eyebrow">Liên quan</p>
-        <h2 class="pd-section-title">Sản phẩm liên quan</h2>
-      </div>
-      {{template "product_grid" .Data.Related}}
-    </section>
-    {{end}}
   </div>
 </section>
+
+<section class="section section-alt">
+  <div class="container">
+    <div class="pd-section-header"><h2 class="pd-section-title">Mô tả sản phẩm</h2></div>
+    <div class="product-desc" style="max-width:760px"><p>{{.Data.Product.DescriptionHTML}}</p></div>
+    {{if .Data.Product.Specs}}
+    <div class="pd-section-header" style="margin-top:40px"><h2 class="pd-section-title">Thông số kỹ thuật</h2></div>
+    <table class="spec-table" style="max-width:760px">
+      {{if .Data.Product.Specs.RecommendedCoats}}<tr><th>Số lớp khuyên dùng</th><td>{{.Data.Product.Specs.RecommendedCoats}}</td></tr>{{end}}
+      {{if .Data.Product.Specs.DryTimeTouchMins}}<tr><th>Khô bề mặt</th><td>{{.Data.Product.Specs.DryTimeTouchMins}} phút</td></tr>{{end}}
+      {{if .Data.Product.Specs.DryTimeRecoatHours}}<tr><th>Chờ sơn lớp tiếp theo</th><td>{{.Data.Product.Specs.DryTimeRecoatHours}} giờ</td></tr>{{end}}
+      {{if .Data.Product.Specs.Dilution}}<tr><th>Pha loãng</th><td>{{.Data.Product.Specs.Dilution}}</td></tr>{{end}}
+      {{if .Data.Product.Specs.CoverageM2PerLiter}}<tr><th>Độ phủ</th><td>{{.Data.Product.Specs.CoverageM2PerLiter}} m²/lít</td></tr>{{end}}
+    </table>
+    {{end}}
+    <div class="pd-section-header" style="margin-top:40px"><h2 class="pd-section-title">Hướng dẫn thi công</h2></div>
+    <div class="product-desc" style="max-width:760px"><p>{{.Data.Product.ApplicationGuideHTML}}</p></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <p class="section-eyebrow">Công cụ</p>
+      <h2 class="section-title">Tính lượng sơn cho sản phẩm này</h2>
+    </div>
+    <form hx-post="/api/htmx/tinh-luong-son" hx-target="#calc-result-detail" class="form-card" style="max-width:760px">
+      <div>
+        <label class="field-label" for="pd-area">Diện tích (m²)</label>
+        <input id="pd-area" name="dien-tich" type="number" step="any" min="0" required class="field-input">
+      </div>
+      <div>
+        <label class="field-label" for="pd-coats">Số lớp sơn</label>
+        <input id="pd-coats" name="so-lop" type="number" min="1" value="2" required class="field-input">
+      </div>
+      <div>
+        <label class="field-label" for="pd-coverage">Độ phủ (m²/lít)</label>
+        <input id="pd-coverage" name="do-phu" type="number" step="any" min="0.1" value="{{printf "%.1f" .Data.Product.CoverageRate}}" required class="field-input">
+      </div>
+      <button type="submit" class="btn btn-primary">Tính lượng sơn</button>
+    </form>
+    <div id="calc-result-detail" style="margin-top:16px;max-width:760px"></div>
+  </div>
+</section>
+
+{{if .Data.Related}}
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">Sản phẩm liên quan</h2>
+    </div>
+    {{template "product_grid" .Data.Related}}
+  </div>
+</section>
+{{end}}
 {{end}}

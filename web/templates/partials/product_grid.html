@@ -1,37 +1,36 @@
 {{define "product_grid"}}
 <div class="product-grid">
 {{range .}}
-  <article class="product-card">
-    <div class="product-card-img-wrap">
-      {{if .ThumbnailURL}}
-      <img src="{{.ThumbnailURL}}" alt="{{.Name}}" loading="lazy">
-      {{else}}
+<article class="product-card">
+  <div class="product-card-img-wrap">
+    {{if .ThumbnailURL}}
+    <img src="{{.ThumbnailURL}}" alt="{{.Name}}" loading="lazy">
+    {{else}}
+    <div class="visual-panel">
       {{$v := "visual-woodgrain"}}
       {{if eq .CategorySlug "son-go-he-nuoc"}}{{$v = "visual-wood"}}{{else if eq .CategorySlug "son-kim-loai-he-nuoc"}}{{$v = "visual-metal"}}{{else if eq .CategorySlug "son-loa"}}{{$v = "visual-speaker"}}{{end}}
       <div class="{{$v}}"></div>
-      <span class="visual-tag">{{.CategoryName}}</span>
-      {{end}}
-      <div class="product-card-badges">
-        <span class="product-badge">{{.CoatingRole}}</span>
-      </div>
     </div>
-    <div class="product-card-body">
-      <h3 class="product-card-name"><a href="/san-pham/{{.Slug}}">{{.Name}}</a></h3>
-      <p class="product-card-desc">{{.ShortSummary}}</p>
-      {{if .Features}}
-      <div class="product-card-features">
-        {{range .Features}}<span class="product-feature-chip">{{.}}</span>{{end}}
-      </div>
-      {{end}}
-      <p class="product-card-meta">Độ phủ: {{.CoverageRate}} m²/lít</p>
-      <div class="product-card-actions">
-        <a href="/san-pham/{{.Slug}}" class="btn btn-primary btn-product-detail">Xem chi tiết</a>
-        <a href="/lien-he" class="btn btn-outline btn-product-sample">Nhận mẫu</a>
-      </div>
+    {{end}}
+    <div class="product-card-badges">
+      {{if .IsFeatured}}<span class="product-badge">Nổi bật</span>{{end}}
     </div>
-  </article>
-{{else}}
-  <p>Chưa có sản phẩm.</p>
+  </div>
+  <div class="product-card-body">
+    <h3 class="product-card-name"><a href="/san-pham/{{.Slug}}">{{.Name}}</a></h3>
+    <p class="product-card-desc">{{.ShortSummary}}</p>
+    {{if .Features}}
+    <div class="product-card-features">
+      {{range .Features}}<span class="product-feature-chip">{{.}}</span>{{end}}
+    </div>
+    {{end}}
+    <p class="product-card-meta">Độ phủ {{printf "%.1f" .CoverageRate}} m²/lít</p>
+    <div class="product-card-actions">
+      <a href="/san-pham/{{.Slug}}" class="btn btn-outline btn-sm">Chi tiết</a>
+      <a href="/lien-he" class="btn btn-primary btn-sm">Nhận Báo Giá</a>
+    </div>
+  </div>
+</article>
 {{end}}
 </div>
 {{end}}

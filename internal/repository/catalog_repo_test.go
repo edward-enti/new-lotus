@@ -51,24 +51,29 @@ func TestPragmasAreOn(t *testing.T) {
 
 func TestSeedCountsAndIdempotency(t *testing.T) {
 	db := testDB(t)
-	var cats, prods int
+	var cats, prods, arts int
 	db.QueryRow(`SELECT COUNT(*) FROM categories`).Scan(&cats)
 	db.QueryRow(`SELECT COUNT(*) FROM products`).Scan(&prods)
+	db.QueryRow(`SELECT COUNT(*) FROM articles WHERE is_published = 1`).Scan(&arts)
 	if cats != 7 {
 		t.Fatalf("categories = %d, want 7", cats)
 	}
-	if prods != 8 {
-		t.Fatalf("products = %d, want 8", prods)
+	if prods != 18 {
+		t.Fatalf("products = %d, want 18", prods)
+	}
+	if arts != 12 {
+		t.Fatalf("published articles = %d, want 12", arts)
 	}
 	if err := database.Seed(db); err != nil {
 		t.Fatalf("second seed: %v", err)
 	}
 	db.QueryRow(`SELECT COUNT(*) FROM categories`).Scan(&cats)
 	db.QueryRow(`SELECT COUNT(*) FROM products`).Scan(&prods)
-	if cats != 7 || prods != 8 {
-		t.Fatalf("after second seed: categories=%d products=%d, want 7/8", cats, prods)
+	db.QueryRow(`SELECT COUNT(*) FROM articles WHERE is_published = 1`).Scan(&arts)
+	if cats != 7 || prods != 18 || arts != 12 {
+		t.Fatalf("after second seed: categories=%d products=%d articles=%d, want 7/18/12", cats, prods, arts)
 	}
-	// Exact seed slugs from PLAN §3.
+	// Exact seed slugs from PLAN §3 (original 7 categories + 8 products).
 	for _, slug := range []string{"son-go-he-nuoc", "son-gia-go", "son-kim-loai-he-nuoc", "son-ngoi-be-tong", "son-loa", "son-composite-nhua", "tram-tret-chong-tham"} {
 		var n int
 		db.QueryRow(`SELECT COUNT(*) FROM categories WHERE slug = ?`, slug).Scan(&n)
@@ -86,6 +91,76 @@ func TestSeedCountsAndIdempotency(t *testing.T) {
 		if n != 1 {
 			t.Errorf("product slug %s count = %d, want 1", slug, n)
 		}
+	}
+	// New products (2 per previously under-filled category) and articles.
+	for _, slug := range []string{
+		"son-lot-gia-go-lotus-wood-base", "son-phu-bong-gia-go-lotus-clear-top",
+		"son-lot-chong-ri-lotus-rust-primer", "son-phu-kim-loai-mo-lotus-metal-matte",
+		"son-lot-khang-kiem-lotus-alkali-primer", "son-san-be-tong-lotus-floor-coat",
+		"son-lot-thung-loa-lotus-speaker-primer", "son-loa-gai-min-lotus-fine-texture",
+		"son-lot-composite-lotus-composite-primer", "son-phu-composite-lotus-composite-topcoat"} {
+		var n int
+		db.QueryRow(`SELECT COUNT(*) FROM products WHERE slug = ?`, slug).Scan(&n)
+		if n != 1 {
+			t.Errorf("new product slug %s count = %d, want 1", slug, n)
+		}
+	}
+	for _, slug := range []string{
+		"cong-sat-ma-kem-gia-go-nha-pho", "tu-bep-go-son-he-nuoc", "lam-moi-mai-ngoi-san-be-tong",
+		"chuan-bi-be-mat-go-truoc-khi-son", "ve-van-go-tren-sat-ma-kem", "xu-ly-ri-set-tren-kim-loai",
+		"son-mai-ngoi-ve-sinh-lot-khang-kiem", "giai-phap-son-go-noi-that-xuat-khau",
+		"son-khong-mui-cho-khong-gian-dang-su-dung", "giai-phap-son-thung-loa-san-khau",
+		"son-lotus-mo-rong-he-composite-chong-tham", "nhan-mau-son-mien-phi-va-bao-gia"} {
+		var n int
+		db.QueryRow(`SELECT COUNT(*) FROM articles WHERE slug = ?`, slug).Scan(&n)
+		if n != 1 {
+			t.Errorf("article slug %s count = %d, want 1", slug, n)
+		}
+	}
+	for _, slug := range []string{"son-go-he-nuoc", "son-gia-go", "son-kim-loai-he-nuoc", "son-ngoi-be-tong", "son-loa", "son-composite-nhua", "tram-tret-chong-tham"} {
+		var n int
+		db.QueryRow(`SELECT COUNT(*) FROM products p JOIN categories c ON c.id = p.category_id WHERE c.slug = ?`, slug).Scan(&n)
+		if n < 2 {
+			t.Errorf("category %s products = %d, want >= 2", slug, n)
+		}
+	}
+}
+
+// TestSeedBackfillPreservesEdits simulates an already-seeded (old) DB:
+// delete the new items, edit an original row, re-run Seed, and require
+// the new items back with no duplicates and the edit intact.
+func TestSeedBackfillPreservesEdits(t *testing.T) {
+	db := testDB(t)
+	if _, err := db.Exec(`UPDATE products SET short_summary = 'edited by admin' WHERE slug = 'son-phu-go-he-nuoc-lotus-acrylic-lacquer'`); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := db.Exec(`DELETE FROM articles`); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := db.Exec(`DELETE FROM products WHERE slug IN ('son-lot-gia-go-lotus-wood-base','son-phu-bong-gia-go-lotus-clear-top','son-lot-chong-ri-lotus-rust-primer','son-phu-kim-loai-mo-lotus-metal-matte','son-lot-khang-kiem-lotus-alkali-primer','son-san-be-tong-lotus-floor-coat','son-lot-thung-loa-lotus-speaker-primer','son-loa-gai-min-lotus-fine-texture','son-lot-composite-lotus-composite-primer','son-phu-composite-lotus-composite-topcoat')`); err != nil {
+		t.Fatal(err)
+	}
+	if err := database.Seed(db); err != nil {
+		t.Fatalf("backfill seed: %v", err)
+	}
+	var prods, arts int
+	var summary string
+	db.QueryRow(`SELECT COUNT(*) FROM products`).Scan(&prods)
+	db.QueryRow(`SELECT COUNT(*) FROM articles WHERE is_published = 1`).Scan(&arts)
+	db.QueryRow(`SELECT short_summary FROM products WHERE slug = 'son-phu-go-he-nuoc-lotus-acrylic-lacquer'`).Scan(&summary)
+	if prods != 18 || arts != 12 {
+		t.Fatalf("after backfill: products=%d articles=%d, want 18/12", prods, arts)
+	}
+	if summary != "edited by admin" {
+		t.Fatalf("admin edit overwritten: summary = %q", summary)
+	}
+	if err := database.Seed(db); err != nil {
+		t.Fatalf("third seed: %v", err)
+	}
+	db.QueryRow(`SELECT COUNT(*) FROM products`).Scan(&prods)
+	db.QueryRow(`SELECT COUNT(*) FROM articles WHERE is_published = 1`).Scan(&arts)
+	if prods != 18 || arts != 12 {
+		t.Fatalf("after third seed: products=%d articles=%d, want 18/12", prods, arts)
 	}
 }
 
@@ -125,15 +200,33 @@ func TestCategoryFiltering(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(got) != 1 || got[0].Slug != "son-gia-go-lotus-sat-ma-kem-xi-mang" {
-		t.Fatalf("son-gia-go products = %v, want exactly the faux-wood product", got)
+	if len(got) != 3 {
+		t.Fatalf("son-gia-go products = %d, want 3", len(got))
+	}
+	found := false
+	for _, p := range got {
+		if p.Slug == "son-gia-go-lotus-sat-ma-kem-xi-mang" {
+			found = true
+		}
+	}
+	if !found {
+		t.Fatalf("son-gia-go products = %v, want original faux-wood product present", got)
 	}
 	filtered, err := prods.ListFiltered(repository.ProductFilter{CoatingRole: "primer"})
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(filtered) != 1 || filtered[0].Slug != "son-lot-go-he-nuoc-lotus-wood-primer" {
-		t.Fatalf("primer filter = %v, want exactly the wood primer", filtered)
+	foundPrimer := false
+	for _, p := range filtered {
+		if p.CoatingRole != "primer" {
+			t.Fatalf("primer filter returned non-primer %v", p)
+		}
+		if p.Slug == "son-lot-go-he-nuoc-lotus-wood-primer" {
+			foundPrimer = true
+		}
+	}
+	if !foundPrimer || len(filtered) < 2 {
+		t.Fatalf("primer filter = %d items, want wood primer present among >= 2 primers", len(filtered))
 	}
 }
 

@@ -3,43 +3,32 @@
   <div class="container">
     <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Trang chủ</a><span>/</span><span>{{.Data.Title}}</span></nav>
     <h1>{{.Data.Title}}</h1>
-    <p>Bài viết, dự án đã thi công và hướng dẫn kỹ thuật sơn hệ nước Sơn Lotus.</p>
+    <p>Dự án thực tế, hướng dẫn kỹ thuật và giải pháp sơn hệ nước từ đội ngũ Sơn Lotus.</p>
   </div>
 </section>
 <section class="section">
   <div class="container">
-    <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:2rem" role="tablist" aria-label="Chuyên mục bài viết">
-      <a href="/du-an" class="filter-tab" {{if eq .Data.Title "Dự án đã thi công"}}aria-selected="true"{{end}}>Dự án</a>
-      <a href="/ho-tro-ky-thuat" class="filter-tab" {{if eq .Data.Title "Hỗ trợ kỹ thuật"}}aria-selected="true"{{end}}>Hỗ trợ kỹ thuật</a>
-      <a href="/giai-phap" class="filter-tab" {{if eq .Data.Title "Giải pháp ngành"}}aria-selected="true"{{end}}>Giải pháp</a>
+    <div style="margin-bottom:28px;display:flex;gap:8px;flex-wrap:wrap">
+      <a href="/du-an" class="filter-tab">Dự án</a>
+      <a href="/ho-tro-ky-thuat" class="filter-tab">Kỹ thuật sơn</a>
+      <a href="/giai-phap" class="filter-tab">Giải pháp</a>
     </div>
     {{if .Data.Articles}}
     <div class="article-list">
     {{range .Data.Articles}}
-      <article class="article-card-v2">
-        <div class="article-card-v2-img">
-          {{if .ThumbnailURL}}
-          <picture>
-            <source srcset="{{webpURL .ThumbnailURL}}" type="image/webp">
-            <img src="{{.ThumbnailURL}}" alt="{{.Title}}" loading="lazy">
-          </picture>
-          {{else}}
-          <div class="article-visual"><div class="visual-woodgrain"></div></div>
-          {{end}}
-        </div>
-        <div class="article-card-v2-body">
-          <h2 class="article-card-v2-title"><a href="/bai-viet/{{.Slug}}">{{.Title}}</a></h2>
-          <p class="article-card-v2-excerpt">{{.Excerpt}}</p>
-          <div class="article-card-v2-footer">
-            <span>{{.AuthorName}}</span>
-            <a href="/bai-viet/{{.Slug}}" class="article-read-more">Đọc tiếp →</a>
-          </div>
+      <article class="article-card">
+        <div class="article-card-visual"><div class="visual-woodgrain"></div></div>
+        <div class="article-card-body">
+          <span class="type-label">{{.Type}}</span>
+          <h2 class="article-card-title"><a href="/bai-viet/{{.Slug}}">{{.Title}}</a></h2>
+          <p class="article-card-excerpt">{{.Excerpt}}</p>
+          <div class="article-card-meta"><span>{{.AuthorName}}</span><a href="/bai-viet/{{.Slug}}">Đọc tiếp →</a></div>
         </div>
       </article>
     {{end}}
     </div>
     {{else}}
-    <p>Chưa có bài viết trong mục này.</p>
+    <p style="color:var(--muted)">Chưa có bài viết nào trong mục này.</p>
     {{end}}
   </div>
 </section>

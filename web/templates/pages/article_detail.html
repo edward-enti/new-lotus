@@ -1,36 +1,31 @@
 {{define "content"}}
-<section class="article-header-section">
+<section class="page-hero">
   <div class="container">
-    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Trang chủ</a><span>/</span><a href="/ho-tro-ky-thuat">Bài viết</a><span>/</span><span>{{.Data.Article.Title}}</span></nav>
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Trang chủ</a><span>/</span><span>Bài viết</span><span>/</span><span>{{.Data.Article.Title}}</span></nav>
     <h1>{{.Data.Article.Title}}</h1>
-    <div class="article-meta-bar">
-      <span>{{.Data.Article.AuthorName}}</span>
-      <span class="article-meta-dot"></span>
-      <span>{{.Data.Article.Type}}</span>
-    </div>
-    {{if .Data.Article.ThumbnailURL}}
-    <picture>
-      <source srcset="{{webpURL .Data.Article.ThumbnailURL}}" type="image/webp">
-      <img src="{{.Data.Article.ThumbnailURL}}" alt="{{.Data.Article.Title}}" loading="lazy" class="article-cover">
-    </picture>
-    {{else}}
-    <div class="article-visual"><div class="visual-woodgrain"></div></div>
-    {{end}}
+    <p>{{.Data.Article.Excerpt}}</p>
+    <p style="margin-top:16px"><span class="type-label">{{.Data.Article.Type}}</span> <span style="color:var(--muted-2);margin-left:8px">{{.Data.Article.AuthorName}}</span></p>
   </div>
 </section>
 <section class="section">
   <div class="container">
-    <p class="section-lead">{{.Data.Article.Excerpt}}</p>
+    {{if .Data.Article.ThumbnailURL}}
+    <picture>
+      {{if webpURL .Data.Article.ThumbnailURL}}<source srcset="{{webpURL .Data.Article.ThumbnailURL}}" type="image/webp">{{end}}
+      <img class="article-cover" src="{{.Data.Article.ThumbnailURL}}" alt="{{.Data.Article.Title}}" style="margin-bottom:32px">
+    </picture>
+    {{end}}
     <div class="article-body">
       <p>{{.Data.Article.ContentHTML}}</p>
     </div>
-    {{if .Data.Related}}
-    <div class="section-header" style="margin-top:3rem">
-      <p class="section-eyebrow">Liên quan</p>
-      <h2 class="section-title">Sản phẩm liên quan</h2>
-    </div>
-    {{template "product_grid" .Data.Related}}
-    {{end}}
   </div>
 </section>
+{{if .Data.Related}}
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-header"><h2 class="section-title">Sản phẩm liên quan</h2></div>
+    {{template "product_grid" .Data.Related}}
+  </div>
+</section>
+{{end}}
 {{end}}

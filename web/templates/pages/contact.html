@@ -2,86 +2,92 @@
 <section class="page-hero">
   <div class="container">
     <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Trang chủ</a><span>/</span><span>Liên hệ</span></nav>
-    <h1>Liên hệ với chúng tôi</h1>
-    <p>Đội ngũ kỹ thuật Lotus sẵn sàng hỗ trợ từ thứ Hai đến thứ Bảy, 8:00–17:30. Phản hồi trong vòng 24 giờ làm việc.</p>
+    <h1>Liên hệ Sơn Lotus</h1>
+    <p>Gửi yêu cầu để nhận báo giá, tư vấn hệ sơn phù hợp hoặc nhận mẫu miễn phí. Đội ngũ kỹ thuật sẽ phản hồi trong giờ làm việc.</p>
   </div>
 </section>
-
-<section class="quick-channels">
-  <div class="container channels-grid">
-    <div class="channel-card">
-      <h3 class="channel-title">Hotline &amp; Zalo</h3>
-      <p class="channel-value">0943 966 662</p>
-      <div class="channel-actions"><a href="tel:0943966662" class="btn btn-primary btn-sm">Gọi ngay</a> <a href="https://zalo.me/0943966662" class="btn btn-outline btn-sm">Chat Zalo</a></div>
-    </div>
-    <div class="channel-card">
-      <h3 class="channel-title">Email</h3>
-      <p class="channel-value">sales@sonlotus.vn</p>
-      <div class="channel-actions"><a href="mailto:sales@sonlotus.vn" class="btn btn-outline btn-sm">Gửi email</a></div>
-    </div>
-    <div class="channel-card">
-      <h3 class="channel-title">Giờ làm việc</h3>
-      <p class="channel-value">T2–T7, 8:00–17:30</p>
-      <p>Ngoài giờ làm việc: liên hệ qua Zalo.</p>
-    </div>
-    <div class="channel-card">
-      <h3 class="channel-title">Đến xưởng</h3>
-      <p class="channel-value">99/5 Đường XTT 26-1, Ấp 2, xã Xuân Thới Thượng, huyện Hóc Môn, TP.HCM</p>
-    </div>
-  </div>
-</section>
-
 <section class="section">
   <div class="container">
-    {{if .Data.Success}}
-    <div class="inquiry-success" role="status">Cảm ơn bạn! Yêu cầu của bạn đã được gửi, Sơn Lotus sẽ liên hệ lại sớm.</div>
-    {{end}}
-    {{if .Data.Error}}
-    <div role="alert" style="color:#b91c1c;margin-bottom:1rem">{{.Data.Error}}</div>
-    {{end}}
-    <div class="section-header">
-      <p class="section-eyebrow">Gửi yêu cầu</p>
-      <h2 class="section-title">Gửi yêu cầu cho chúng tôi</h2>
-      <p class="section-lead">Điền thông tin bên dưới — chúng tôi sẽ phản hồi trong vòng 24 giờ làm việc. Công ty TNHH Bích Trang — tư vấn kỹ thuật, báo giá và đăng ký đại lý sơn hệ nước Sơn Lotus.</p>
+    <div class="channels-grid" style="margin-bottom:32px">
+      <div class="channel-card">
+        <p class="channel-title">Hotline</p>
+        <p class="channel-value"><a href="tel:0943966662">0943 966 662</a></p>
+        <div class="channel-actions"><a href="tel:0943966662" class="btn btn-outline btn-sm">Gọi ngay</a></div>
+      </div>
+      <div class="channel-card">
+        <p class="channel-title">Zalo</p>
+        <p class="channel-value">Zalo Sơn Lotus</p>
+        <div class="channel-actions"><a href="https://zalo.me/0943966662" class="btn btn-outline btn-sm">Chat Zalo</a></div>
+      </div>
+      <div class="channel-card">
+        <p class="channel-title">Email</p>
+        <p class="channel-value"><a href="mailto:sales@sonlotus.vn">sales@sonlotus.vn</a></p>
+        <div class="channel-actions"><a href="mailto:sales@sonlotus.vn" class="btn btn-outline btn-sm">Gửi email</a></div>
+      </div>
+      <div class="channel-card">
+        <p class="channel-title">Giờ làm việc</p>
+        <p class="channel-value">T2–T7, 8h–17h30</p>
+        <div class="channel-actions"><span style="color:var(--muted-2);font-size:.9rem">99/5 Đường XTT 26-1, Ấp 2, xã Xuân Thới Thượng, huyện Hóc Môn, TP.HCM</span></div>
+      </div>
     </div>
-    <form action="/lien-he" method="post" hx-post="/lien-he" hx-target="body" class="form-card" style="max-width:720px">
-      <input type="hidden" name="csrf_token" value="{{.Data.CSRFToken}}">
+    <div style="display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:24px;align-items:start">
       <div>
-        <label class="field-label" for="ct-name">Họ tên <span class="field-required">*</span></label>
-        <input id="ct-name" name="ten" type="text" maxlength="100" required class="field-input">
+        <h2 class="section-title" style="font-size:1.5rem">Gửi yêu cầu</h2>
+        {{if .Data.Success}}
+        {{template "inquiry_success" .}}
+        {{else}}
+        <form action="/lien-he" method="post" class="form-card" style="margin-top:16px">
+          <input type="hidden" name="csrf_token" value="{{.Data.CSRFToken}}">
+          <div style="position:absolute;left:-9999px" aria-hidden="true">
+            <label for="website_url">Không điền vào ô này</label>
+            <input type="text" id="website_url" name="website_url" tabindex="-1" autocomplete="off">
+          </div>
+          <div>
+            <label class="field-label" for="ten">Họ tên <span class="field-required">*</span></label>
+            <input id="ten" name="ten" type="text" required class="field-input">
+          </div>
+          <div>
+            <label class="field-label" for="dien-thoai">Điện thoại <span class="field-required">*</span></label>
+            <input id="dien-thoai" name="dien-thoai" type="tel" required class="field-input">
+          </div>
+          <div>
+            <label class="field-label" for="email">Email</label>
+            <input id="email" name="email" type="email" class="field-input">
+          </div>
+          <div>
+            <label class="field-label" for="cong-ty">Công ty / cửa hàng</label>
+            <input id="cong-ty" name="cong-ty" type="text" class="field-input">
+          </div>
+          <div>
+            <label class="field-label" for="loai-yeu-cau">Loại yêu cầu</label>
+            <select id="loai-yeu-cau" name="loai-yeu-cau" class="field-input">
+              <option value="quote">Nhận báo giá</option>
+              <option value="tech_support">Tư vấn kỹ thuật</option>
+              <option value="dealer">Hợp tác đại lý</option>
+              <option value="general">Yêu cầu khác</option>
+            </select>
+          </div>
+          <div>
+            <label class="field-label" for="dien-tich">Diện tích cần sơn (m²)</label>
+            <input id="dien-tich" name="dien-tich" type="number" step="any" min="0" class="field-input">
+          </div>
+          <div>
+            <label class="field-label" for="noi-dung">Nội dung <span class="field-required">*</span></label>
+            <textarea id="noi-dung" name="noi-dung" rows="5" required class="field-input" placeholder="Mô tả bề mặt, màu sắc và nhu cầu của bạn"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Gửi yêu cầu</button>
+          <p style="color:var(--muted-2);font-size:.9rem;margin:0">Chúng tôi sẽ phản hồi trong giờ làm việc (T2–T7, 8h–17h30).</p>
+        </form>
+        {{end}}
+        {{if .Data.Error}}<p style="color:#b91c1c;margin-top:16px">{{.Data.Error}}</p>{{end}}
       </div>
-      <div>
-        <label class="field-label" for="ct-phone">Số điện thoại <span class="field-required">*</span></label>
-        <input id="ct-phone" name="dien-thoai" type="tel" maxlength="30" required class="field-input">
+      <div class="form-card" style="background:var(--surface)">
+        <h2 style="font-size:1.2rem;margin:0 0 12px">Thông tin liên hệ</h2>
+        <p style="margin:0 0 10px"><strong>Hotline / Zalo:</strong> <a href="tel:0943966662">0943 966 662</a></p>
+        <p style="margin:0 0 10px"><strong>Email:</strong> <a href="mailto:sales@sonlotus.vn">sales@sonlotus.vn</a></p>
+        <p style="margin:0 0 10px"><strong>Địa chỉ:</strong> 99/5 Đường XTT 26-1, Ấp 2, xã Xuân Thới Thượng, huyện Hóc Môn, TP.HCM</p>
+        <p style="margin:0"><strong>Giờ làm việc:</strong> T2–T7, 8h–17h30</p>
       </div>
-      <div>
-        <label class="field-label" for="ct-email">Email</label>
-        <input id="ct-email" name="email" type="email" class="field-input">
-      </div>
-      <div>
-        <label class="field-label" for="ct-company">Công ty</label>
-        <input id="ct-company" name="cong-ty" type="text" class="field-input">
-      </div>
-      <div>
-        <label class="field-label" for="ct-area">Diện tích cần sơn (m²)</label>
-        <input id="ct-area" name="dien-tich" type="number" step="any" min="0" class="field-input">
-      </div>
-      <div>
-        <label class="field-label" for="ct-msg">Nội dung <span class="field-required">*</span></label>
-        <textarea id="ct-msg" name="noi-dung" maxlength="2000" required class="field-input" rows="5"></textarea>
-      </div>
-      <div style="display:none" aria-hidden="true">
-        <label for="ct-website">Website</label>
-        <input id="ct-website" name="website_url" type="text" tabindex="-1" autocomplete="off">
-      </div>
-      <button type="submit" class="btn btn-primary">Gửi yêu cầu</button>
-      <p>Chúng tôi sẽ phản hồi trong vòng 24 giờ làm việc.</p>
-    </form>
-    <div style="margin-top:2rem">
-      <h3>Địa chỉ xưởng</h3>
-      <p>99/5 Đường XTT 26-1, Ấp 2, xã Xuân Thới Thượng, huyện Hóc Môn, TP.HCM</p>
-      <p>Cam kết phản hồi: chúng tôi cam kết phản hồi trong 24 giờ làm việc với mọi yêu cầu được gửi qua form, email hoặc Zalo.</p>
-      <p><a href="tel:0943966662" class="btn btn-primary btn-sm">Gọi ngay: 0943 966 662</a> <a href="https://zalo.me/0943966662" class="btn btn-outline btn-sm">Chat Zalo ngay</a></p>
     </div>
   </div>
 </section>

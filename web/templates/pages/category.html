@@ -2,31 +2,24 @@
 {{if .Data.Filter.CategorySlug}}
 {{$desc := ""}}
 {{range .Data.Categories}}{{if eq .Slug $.Data.Filter.CategorySlug}}{{$desc = .ShortDescription}}{{end}}{{end}}
-{{$v := "visual-woodgrain"}}
-{{if eq .Data.Filter.CategorySlug "son-go-he-nuoc"}}{{$v = "visual-wood"}}{{else if eq .Data.Filter.CategorySlug "son-kim-loai-he-nuoc"}}{{$v = "visual-metal"}}{{else if eq .Data.Filter.CategorySlug "son-loa"}}{{$v = "visual-speaker"}}{{end}}
-<section class="category-page">
-  <div class="category-hero">
-    <div class="container category-hero-inner">
-      <div>
-        <nav class="category-breadcrumb" aria-label="Breadcrumb"><a href="/">Trang chủ</a><span class="category-breadcrumb-sep"></span><a href="/san-pham">Sản phẩm</a><span class="category-breadcrumb-sep"></span><span>{{.Data.Title}}</span></nav>
-        <p class="category-kicker">Sơn hệ nước</p>
-        <h1 class="category-title">{{.Data.Title}}</h1>
-        {{if $desc}}<p class="category-lead">{{$desc}}</p>{{else}}<p class="category-lead">Sơn hệ nước Sơn Lotus cho bề mặt này — an toàn, ít mùi và bền màu.</p>{{end}}
-        <div class="category-hero-actions">
-          <a href="/lien-he" class="btn btn-primary">Nhận mẫu miễn phí</a>
-          <a href="#san-pham-danh-muc" class="btn btn-outline" style="color:#fff;border-color:rgba(255,255,255,.5)">Xem hệ sản phẩm</a>
-        </div>
-        <div class="category-proof">
-          <span class="category-proof-item">Hệ nước 100%</span>
-          <span class="category-proof-item">Nội thất &amp; ngoại thất</span>
-          <span class="category-proof-item">Màu sắc đa dạng</span>
-        </div>
+<section class="category-hero">
+  <div class="container category-hero-inner">
+    <div>
+      <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Trang chủ</a><span>/</span><a href="/san-pham">Sản phẩm</a><span>/</span><span>{{.Data.Title}}</span></nav>
+      <p class="category-kicker">Sơn hệ nước</p>
+      <h1 class="category-title">{{.Data.Title}}</h1>
+      {{if $desc}}<p class="category-lead">{{$desc}}</p>{{else}}<p class="category-lead">Sơn hệ nước Sơn Lotus cho bề mặt này — ít mùi, dễ thi công và bền màu.</p>{{end}}
+      <div class="category-hero-actions">
+        <a href="/lien-he" class="btn btn-primary">Nhận mẫu miễn phí</a>
+        <a href="#san-pham-danh-muc" class="btn btn-outline">Xem hệ sản phẩm</a>
       </div>
-      <div class="category-visual">
-        <div class="{{$v}}"></div>
-        {{if eq .Data.Filter.CategorySlug "son-loa"}}<span class="speaker-cone big"></span><span class="speaker-cone small"></span>{{end}}
-        <div class="visual-label"><strong>{{.Data.Title}}</strong><span>{{len .Data.Products}} sản phẩm trong danh mục</span></div>
-      </div>
+      <p style="color:var(--muted-2);margin-top:16px">{{len .Data.Products}} sản phẩm trong danh mục này</p>
+    </div>
+    <div class="category-visual">
+      {{$v := "visual-woodgrain"}}
+      {{if eq .Data.Filter.CategorySlug "son-go-he-nuoc"}}{{$v = "visual-wood"}}{{else if eq .Data.Filter.CategorySlug "son-kim-loai-he-nuoc"}}{{$v = "visual-metal"}}{{else if eq .Data.Filter.CategorySlug "son-loa"}}{{$v = "visual-speaker"}}{{end}}
+      <div class="{{$v}}"></div>
+      <div class="visual-label"><strong>{{.Data.Title}}</strong><span>Hệ lót – phủ đầy đủ</span></div>
     </div>
   </div>
 </section>
@@ -43,40 +36,26 @@
   </div>
 </section>
 
-<section class="section system-section">
+<section class="section section-alt">
   <div class="container">
-    <div class="category-section-head">
-      <div><p class="section-eyebrow">Lợi ích nổi bật</p><h2 class="section-title">Một hệ sơn hoàn chỉnh</h2></div>
-      <p>Chọn đúng lớp sơn cho đúng vai trò: từ xử lý nền, tạo màu đến phủ bảo vệ — hệ nước, nhẹ mùi và bền màu.</p>
+    <div class="section-header">
+      <p class="section-eyebrow">Vì sao chọn hệ này</p>
+      <h2 class="section-title">Một hệ sơn hoàn chỉnh, không chắp vá</h2>
     </div>
     <div class="benefit-grid">
-      <div class="benefit-card"><h3>Tôn vẻ đẹp bề mặt</h3><p>Giữ vân và kết cấu tự nhiên của vật liệu trong khi bảo vệ lớp nền.</p></div>
-      <div class="benefit-card"><h3>Nhanh khô</h3><p>Nhiều dòng một thành phần, dùng ngay, giúp rút ngắn chu kỳ hoàn thiện.</p></div>
-      <div class="benefit-card"><h3>Bền &amp; dẻo dai</h3><p>Màng sơn chịu co giãn, hỗ trợ kháng nước, hóa chất và thời tiết.</p></div>
-      <div class="benefit-card"><h3>Thân thiện hơn</h3><p>Hệ nước, nhẹ mùi và không cần pha nhiều dung môi như hệ truyền thống.</p></div>
+      <div class="benefit-card"><h3>Đúng vai trò từng lớp</h3><p>Lót làm nền và tăng bám, phủ tạo màu và bảo vệ — mỗi lớp có nhiệm vụ riêng.</p></div>
+      <div class="benefit-card"><h3>Thi công nhẹ mùi</h3><p>Hệ nước giúp thi công dễ chịu hơn và vệ sinh dụng cụ bằng nước.</p></div>
+      <div class="benefit-card"><h3>Bảng màu đa dạng</h3><p>Nhiều tông màu theo từng dòng, từ vân gỗ tự nhiên đến màu phủ hiện đại.</p></div>
+      <div class="benefit-card"><h3>Tư vấn theo bề mặt</h3><p>Kỹ thuật tư vấn hệ lót – phủ phù hợp với tình trạng bề mặt thực tế của bạn.</p></div>
     </div>
   </div>
 </section>
 
-<section class="section process-band">
+<section class="section">
   <div class="container">
-    <p class="section-eyebrow">Quy trình</p>
-    <h2 class="section-title">Từ tư vấn đến bàn giao</h2>
-    <div class="landing-process">
-      <div class="landing-step"><p class="landing-step-num">01</p><h3>Tiếp nhận yêu cầu</h3><p>Tư vấn bề mặt, hiệu ứng màu và tiêu chuẩn kỹ thuật.</p></div>
-      <div class="landing-step"><p class="landing-step-num">02</p><h3>Pha mẫu</h3><p>R&amp;D pha mẫu và kiểm tra trên vật liệu thực.</p></div>
-      <div class="landing-step"><p class="landing-step-num">03</p><h3>Giao mẫu miễn phí</h3><p>Mẫu giao tận tay trong 48 giờ.</p></div>
-      <div class="landing-step"><p class="landing-step-num">04</p><h3>Sản xuất &amp; bàn giao</h3><p>Sản xuất theo lô sau khi phê duyệt mẫu.</p></div>
-    </div>
-  </div>
-</section>
-
-<section class="section category-cta">
-  <div class="container category-cta-inner">
-    <div><h2>Cần tư vấn cho bề mặt của bạn?</h2><p>Liên hệ đội ngũ kỹ thuật Lotus để chọn đúng hệ sơn và nhận mẫu miễn phí.</p></div>
-    <div class="category-cta-actions">
-      <a href="/lien-he" class="btn btn-primary">Nhận báo giá</a>
-      <a href="tel:0943966662" class="btn btn-outline">Gọi 0943 966 662</a>
+    <div class="support-cta">
+      <div><h2>Cần tư vấn cho bề mặt của bạn?</h2><p>Liên hệ đội ngũ kỹ thuật Lotus để chọn đúng hệ sơn và nhận mẫu miễn phí.</p></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap"><a href="/lien-he" class="btn btn-primary">Nhận báo giá</a><a href="tel:0943966662" class="btn btn-outline" style="background:transparent;color:#fff;border-color:rgba(255,255,255,.5)">Gọi 0943 966 662</a></div>
     </div>
   </div>
 </section>
@@ -84,14 +63,14 @@
 <section class="page-hero">
   <div class="container">
     <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Trang chủ</a><span>/</span><span>Sản phẩm</span></nav>
-    <h1>Danh mục sản phẩm</h1>
-    <p>Sản phẩm Sơn Lotus — dòng sơn hệ nước cao cấp cho gỗ, kim loại, nhựa và mọi bề mặt vật liệu. Công thức an toàn, ít mùi, pha màu theo yêu cầu.</p>
+    <h1>Tất cả sản phẩm</h1>
+    <p>Sơn hệ nước Sơn Lotus cho gỗ, kim loại, nhựa, xi măng và bê tông — lọc theo danh mục, vai trò, độ bóng và khu vực sử dụng.</p>
   </div>
 </section>
 
 <section class="section">
   <div class="container">
-    <form action="/san-pham" method="get" hx-get="/san-pham" hx-target="#catalog-grid" hx-trigger="change" class="form-card" style="margin-bottom:2rem">
+    <form action="/san-pham" method="get" hx-get="/san-pham" hx-target="#catalog-grid" hx-trigger="change" class="form-card" style="margin-bottom:24px">
       <div>
         <label class="field-label" for="f-cat">Danh mục</label>
         <select id="f-cat" name="danh-muc" class="field-input">
@@ -131,7 +110,7 @@
       </div>
       <button type="submit" class="btn btn-primary">Lọc sản phẩm</button>
     </form>
-    <div style="margin-bottom:1.5rem;display:flex;gap:.5rem;flex-wrap:wrap">
+    <div style="margin-bottom:20px;display:flex;gap:8px;flex-wrap:wrap">
       <a href="/san-pham" class="filter-tab">Tất cả</a>
       <a href="/san-pham?vai-tro=primer" class="filter-tab">Sơn lót</a>
       <a href="/san-pham?vai-tro=topcoat" class="filter-tab">Sơn phủ</a>

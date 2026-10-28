@@ -1,17 +1,13 @@
 {{define "calculator_result"}}
 <div class="calc-result">
 {{if .Error}}
-  <p role="alert">{{.Error}}</p>
-{{else if .Calculated}}
-  <p><strong>Lượng sơn cần dùng: {{printf "%.2f" .Liters}} lít</strong> (đã cộng 5% hao hụt)</p>
-  <p>Diện tích {{printf "%.2f" .AreaM2}} m² · {{.Coats}} lớp · Độ phủ {{printf "%.2f" .Coverage}} m²/lít</p>
-  <p>Gợi ý đóng gói:
-    {{if gt .Mix.Pack18L 0}}Thùng 18L × {{.Mix.Pack18L}} {{end}}
-    {{if gt .Mix.Pack38L 0}}Lon 3.8L × {{.Mix.Pack38L}} {{end}}
-    {{if gt .Mix.Pack08L 0}}Lon 0.8L × {{.Mix.Pack08L}}{{end}}
-  </p>
+<p role="alert">{{.Error}}</p>
 {{else}}
-  <p>Nhập thông số để tính lượng sơn.</p>
+<p><strong>Lượng sơn cần dùng: {{printf "%.2f" .Liters}} lít</strong></p>
+<p style="color:var(--muted)">Diện tích {{printf "%.1f" .AreaM2}} m² · {{.Coats}} lớp · Độ phủ {{printf "%.1f" .Coverage}} m²/lít · Đã cộng 5% hao hụt.</p>
+{{if .Mix}}
+<p>Gợi ý đóng gói: {{if gt .Mix.Pack18L 0}}18L × {{.Mix.Pack18L}} {{end}}{{if gt .Mix.Pack38L 0}}3.8L × {{.Mix.Pack38L}} {{end}}{{if gt .Mix.Pack08L 0}}0.8L × {{.Mix.Pack08L}}{{end}}</p>
+{{end}}
 {{end}}
 </div>
 {{end}}

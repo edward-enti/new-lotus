@@ -1,109 +1,129 @@
 {{define "content"}}
 <section class="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-overlay"></div>
-  <div class="container hero-content">
-    <p class="hero-eyebrow"><span></span>Sơn hệ nước</p>
-    <h1>Sơn hệ nước <em>an toàn</em> cho mọi bề mặt vật liệu</h1>
-    <p class="hero-desc">Sơn gỗ, sơn giả gỗ, sơn kim loại, sơn ngói và chống thấm hệ nước: không mùi, Low VOC, bám dính cao và bền màu — pha màu theo yêu cầu.</p>
-    <p><a href="/lien-he" class="btn btn-primary">Nhận mẫu miễn phí</a> <a href="/san-pham" class="btn btn-outline" style="color:#fff;border-color:rgba(255,255,255,.5)">Xem sản phẩm</a></p>
-    <p style="color:rgba(255,255,255,.7);font-size:.9rem">{{len .Data.Categories}} danh mục · {{len .Data.Featured}} sản phẩm nổi bật</p>
+  <div class="container hero-inner">
+    <div>
+      <p class="hero-eyebrow">Sơn hệ nước · Công ty TNHH Bích Trang</p>
+      <h1>Sơn hệ nước <em>ít mùi, bám chắc</em> cho mọi bề mặt</h1>
+      <p class="hero-desc">Sơn gỗ, sơn giả gỗ, sơn kim loại, sơn ngói, sơn loa và chống thấm hệ nước — thi công nhẹ mùi, vệ sinh dụng cụ bằng nước, màu sắc đa dạng theo từng bề mặt.</p>
+      <div class="hero-actions">
+        <a href="/san-pham" class="btn btn-primary">Xem tất cả sản phẩm</a>
+        <a href="/lien-he" class="btn btn-outline">Nhận mẫu miễn phí</a>
+      </div>
+      <p style="color:var(--muted-2);font-size:.9rem;margin-top:16px">{{len .Data.Categories}} dòng sản phẩm · {{len .Data.Featured}} sản phẩm nổi bật trong danh mục</p>
+    </div>
+    <div class="hero-panel">
+      <div class="hero-panel-visual"><div class="visual-woodgrain"></div></div>
+      <h3>Bắt đầu từ bề mặt của bạn</h3>
+      <p>Chọn bề mặt cần sơn để xem hệ lót, phủ và bảng màu phù hợp — hoặc tính nhanh lượng sơn cần dùng.</p>
+      <div class="swatch-row" aria-hidden="true">
+        <span class="swatch-dot" style="background:#6E2C00"></span>
+        <span class="swatch-dot" style="background:#B07A3F"></span>
+        <span class="swatch-dot" style="background:#15803d"></span>
+        <span class="swatch-dot" style="background:#334155"></span>
+        <span class="swatch-dot" style="background:#9A3412"></span>
+        <span class="swatch-dot" style="background:#F8FAFC;border:1px solid var(--border)"></span>
+      </div>
+      <p style="margin-top:16px"><a href="/cong-cu/tinh-luong-son" class="btn btn-outline btn-sm">Tính lượng sơn →</a></p>
+    </div>
   </div>
 </section>
 
-<section class="section">
+<section class="section" style="padding-top:40px">
   <div class="container">
-    <div class="section-header">
-      <p class="section-eyebrow">Vì sao chọn Sơn Lotus</p>
-      <h2 class="section-title">An toàn &amp; không độc hại</h2>
-      <p class="section-lead">Sơn hệ nước ít mùi, Low VOC, không cháy, thân thiện môi trường và an toàn cho sức khỏe.</p>
-    </div>
-    <div class="usp-grid">
-      <div class="usp-item"><h3 class="usp-title">An toàn &amp; Không độc hại</h3><p class="usp-desc">Sơn hệ nước ít mùi, Low VOC, đạt chuẩn an toàn môi trường.</p></div>
-      <div class="usp-item"><h3 class="usp-title">Mọi bề mặt vật liệu</h3><p class="usp-desc">Gỗ, kim loại, nhựa, xi măng, MDF, composite — một giải pháp toàn diện.</p></div>
-      <div class="usp-item"><h3 class="usp-title">Giao mẫu trong 48h</h3><p class="usp-desc">Nhận yêu cầu hôm nay — giao mẫu miễn phí tận nơi trong 48 giờ.</p></div>
-      <div class="usp-item"><h3 class="usp-title">Pha theo yêu cầu</h3><p class="usp-desc">R&amp;D riêng cho doanh nghiệp — màu sắc, hiệu ứng, tiêu chuẩn đặt hàng.</p></div>
+    <div class="trust-strip">
+      <div class="trust-item"><h3>Hệ nước, ít mùi</h3><p>Thi công dễ chịu hơn sơn dung môi, dụng cụ rửa bằng nước.</p></div>
+      <div class="trust-item"><h3>Đa bề mặt</h3><p>Gỗ, kim loại, nhựa, xi măng, MDF và composite.</p></div>
+      <div class="trust-item"><h3>Hệ lót – phủ đầy đủ</h3><p>Từ xử lý nền, tạo màu đến lớp phủ bảo vệ.</p></div>
+      <div class="trust-item"><h3>Tư vấn kỹ thuật</h3><p>Chọn đúng hệ sơn cho từng bề mặt qua hotline và Zalo.</p></div>
     </div>
   </div>
 </section>
 
-<section class="section" style="background:var(--neutral-100)">
+<section class="section section-alt">
   <div class="container">
     <div class="section-header">
-      <p class="section-eyebrow">Dòng sản phẩm</p>
-      <h2 class="section-title">Giải pháp sơn cho mọi nhu cầu</h2>
-      <p class="section-lead">Từ sơn giả gỗ cao cấp đến sơn phủ bảo vệ kim loại công nghiệp — Lotus có giải pháp phù hợp.</p>
+      <p class="section-eyebrow">Danh mục</p>
+      <h2 class="section-title">Chọn theo bề mặt cần sơn</h2>
+      <p class="section-lead">Mỗi dòng sản phẩm được phát triển cho một nhóm bề mặt riêng, với hệ lót và phủ tương ứng.</p>
     </div>
     <div class="category-grid">
     {{range .Data.Categories}}
       <a href="/danh-muc/{{.Slug}}" class="category-card">
-        {{$v := "visual-woodgrain"}}
-        {{if eq .Slug "son-go-he-nuoc"}}{{$v = "visual-wood"}}{{else if eq .Slug "son-kim-loai-he-nuoc"}}{{$v = "visual-metal"}}{{else if eq .Slug "son-loa"}}{{$v = "visual-speaker"}}{{end}}
-        <div class="{{$v}}"></div>
+        <div class="visual-panel">
+          {{$v := "visual-woodgrain"}}
+          {{if eq .Slug "son-go-he-nuoc"}}{{$v = "visual-wood"}}{{else if eq .Slug "son-kim-loai-he-nuoc"}}{{$v = "visual-metal"}}{{else if eq .Slug "son-loa"}}{{$v = "visual-speaker"}}{{end}}
+          <div class="{{$v}}"></div>
+        </div>
         <div class="category-card-overlay"></div>
+        <span class="category-card-arrow" aria-hidden="true">→</span>
         <div class="category-card-body">
           <h3 class="category-card-name">{{.Name}}</h3>
           <p class="category-card-desc">{{.ShortDescription}}</p>
         </div>
-        <span class="category-card-arrow">→</span>
       </a>
-    {{else}}
-      <p>Chưa có danh mục.</p>
     {{end}}
     </div>
-    <p style="margin-top:1.5rem"><a href="/san-pham" class="btn btn-outline">Xem tất cả sản phẩm</a></p>
   </div>
 </section>
 
 <section class="section">
-  <div class="container">
-    <div class="section-header">
-      <p class="section-eyebrow">Ứng dụng</p>
-      <h2 class="section-title">Phù hợp cho mọi bề mặt</h2>
-    </div>
-    <div class="surfaces-grid">
-      <div class="surface-card"><h3 class="surface-name">Gỗ tự nhiên</h3></div>
-      <div class="surface-card"><h3 class="surface-name">MDF / HDF</h3></div>
-      <div class="surface-card"><h3 class="surface-name">Kim loại / Sắt thép</h3></div>
-      <div class="surface-card"><h3 class="surface-name">Nhựa / Composite</h3></div>
-      <div class="surface-card"><h3 class="surface-name">Xi măng / Bê tông</h3></div>
-    </div>
-  </div>
-</section>
-
-<section class="section" style="background:var(--neutral-100)">
   <div class="container">
     <div class="section-header">
       <p class="section-eyebrow">Sản phẩm nổi bật</p>
-      <h2 class="section-title">Sản phẩm nổi bật</h2>
+      <h2 class="section-title">Được chọn nhiều cho các bề mặt phổ biến</h2>
     </div>
     {{template "product_grid" .Data.Featured}}
+    <p style="margin-top:24px"><a href="/san-pham" class="btn btn-outline">Xem tất cả sản phẩm →</a></p>
   </div>
 </section>
 
-<section class="section">
+<section class="section section-alt">
   <div class="container">
     <div class="section-header">
       <p class="section-eyebrow">Quy trình</p>
-      <h2 class="section-title">Cam kết chất lượng từ xưởng đến tay bạn</h2>
+      <h2 class="section-title">Từ tư vấn đến bàn giao, rõ từng bước</h2>
     </div>
     <div class="process-grid">
-      <div class="process-step"><p class="process-num">01</p><h3 class="process-title">Tiếp nhận yêu cầu</h3><p class="process-desc">Tư vấn bề mặt, hiệu ứng màu, tiêu chuẩn kỹ thuật và thể tích theo đơn hàng của khách.</p></div>
-      <div class="process-step"><p class="process-num">02</p><h3 class="process-title">Nghiên cứu &amp; Pha mẫu</h3><p class="process-desc">Phòng R&amp;D pha mẫu sơn chính xác theo công thức, kiểm tra màu sắc, độ bám và độ bền trên vật liệu thực.</p></div>
-      <div class="process-step"><p class="process-num">03</p><h3 class="process-title">Giao mẫu miễn phí</h3><p class="process-desc">Mẫu sơn được đóng gói và giao tận tay khách trong 48 giờ — không tính phí vận chuyển nội thành.</p></div>
-      <div class="process-step"><p class="process-num">04</p><h3 class="process-title">Sản xuất &amp; Bàn giao</h3><p class="process-desc">Sau khi phê duyệt mẫu, sản xuất theo lô và bàn giao đúng tiến độ đã cam kết.</p></div>
+      <div class="process-step"><p class="process-num">01</p><h3 class="process-title">Tư vấn bề mặt</h3><p class="process-desc">Xác định vật liệu, tình trạng bề mặt và yêu cầu sử dụng trước khi chọn hệ sơn.</p></div>
+      <div class="process-step"><p class="process-num">02</p><h3 class="process-title">Pha mẫu và kiểm tra</h3><p class="process-desc">Pha mẫu theo màu yêu cầu và kiểm tra trên vật liệu thực trước khi thi công diện rộng.</p></div>
+      <div class="process-step"><p class="process-num">03</p><h3 class="process-title">Nhận mẫu miễn phí</h3><p class="process-desc">Gửi yêu cầu qua form, Zalo hoặc hotline để nhận mẫu và tư vấn chọn hệ sơn.</p></div>
+      <div class="process-step"><p class="process-num">04</p><h3 class="process-title">Thi công và bàn giao</h3><p class="process-desc">Thi công theo đúng thứ tự lót – tạo hiệu ứng (nếu có) – phủ bảo vệ, mỗi lớp đủ thời gian khô.</p></div>
     </div>
   </div>
 </section>
 
-<section class="section" style="background:var(--neutral-100)">
+{{if .Data.Articles}}
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <p class="section-eyebrow">Bài viết mới</p>
+      <h2 class="section-title">Dự án, hướng dẫn kỹ thuật và giải pháp</h2>
+    </div>
+    <div class="article-list">
+    {{range .Data.Articles}}
+      <article class="article-card">
+        <div class="article-card-visual"><div class="visual-woodgrain"></div></div>
+        <div class="article-card-body">
+          <h3 class="article-card-title"><a href="/bai-viet/{{.Slug}}">{{.Title}}</a></h3>
+          <p class="article-card-excerpt">{{.Excerpt}}</p>
+          <div class="article-card-meta"><span>{{.AuthorName}}</span><a href="/bai-viet/{{.Slug}}">Đọc tiếp →</a></div>
+        </div>
+      </article>
+    {{end}}
+    </div>
+    <p style="margin-top:24px"><a href="/ho-tro-ky-thuat" class="btn btn-outline">Xem hướng dẫn kỹ thuật →</a></p>
+  </div>
+</section>
+{{end}}
+
+<section class="section section-alt">
   <div class="container">
     <div class="section-header">
       <p class="section-eyebrow">Công cụ</p>
-      <h2 class="section-title">Tính lượng sơn nhanh</h2>
-      <p class="section-lead">Nhập diện tích, số lớp và độ phủ để tính lượng sơn cần dùng (đã cộng 5% hao hụt).</p>
+      <h2 class="section-title">Tính lượng sơn trước khi mua</h2>
+      <p class="section-lead">Nhập diện tích, số lớp và độ phủ để ước tính lượng sơn cần dùng (đã cộng 5% hao hụt).</p>
     </div>
-    <form hx-post="/api/htmx/tinh-luong-son" hx-target="#calc-result-home" class="form-card">
+    <form hx-post="/api/htmx/tinh-luong-son" hx-target="#calc-result-home" class="form-card" style="max-width:760px">
       <div>
         <label class="field-label" for="home-area">Diện tích (m²)</label>
         <input id="home-area" name="dien-tich" type="number" step="any" min="0" required class="field-input">
@@ -118,25 +138,28 @@
       </div>
       <button type="submit" class="btn btn-primary">Tính lượng sơn</button>
     </form>
-    <div id="calc-result-home" style="margin-top:1rem"></div>
+    <div id="calc-result-home" style="margin-top:16px;max-width:760px"></div>
   </div>
 </section>
 
 <section class="section">
   <div class="container">
     <div class="section-header">
-      <p class="section-eyebrow">Bài viết mới</p>
-      <h2 class="section-title">Dự án &amp; Hướng dẫn kỹ thuật mới nhất</h2>
+      <p class="section-eyebrow">Hỏi đáp nhanh</p>
+      <h2 class="section-title">Những câu hỏi thường gặp</h2>
     </div>
-    {{if .Data.Articles}}
-    <ul>
-    {{range .Data.Articles}}
-      <li><a href="/bai-viet/{{.Slug}}">{{.Title}}</a></li>
-    {{end}}
-    </ul>
-    {{else}}
-    <p>Chưa có bài viết. Các bài dự án và hướng dẫn kỹ thuật sẽ xuất hiện tại đây.</p>
-    {{end}}
+    <div class="faq-list">
+      <details><summary>Sơn hệ nước khác sơn dung môi ở điểm nào?</summary><p>Sơn hệ nước dùng nước làm dung môi pha loãng, vì vậy ít mùi hơn khi thi công và dụng cụ có thể rửa bằng nước. Sơn dung môi thường mùi nặng hơn và cần dung môi chuyên dụng để vệ sinh.</p></details>
+      <details><summary>Tôi nên bắt đầu từ sơn lót hay sơn phủ?</summary><p>Hầu hết bề mặt cần lớp lót trước: lót làm đều nền, tăng bám dính và tiết kiệm sơn phủ. Trang sản phẩm của từng dòng đều ghi rõ vai trò lót hay phủ và số lớp khuyên dùng.</p></details>
+      <details><summary>Làm sao tính lượng sơn cần mua?</summary><p>Dùng công cụ tính lượng sơn trên website: nhập diện tích, số lớp và độ phủ của sản phẩm, kết quả đã cộng 5% hao hụt và gợi ý đóng gói phù hợp.</p></details>
+      <details><summary>Tôi có thể nhận mẫu trước khi đặt hàng không?</summary><p>Có. Gửi yêu cầu qua form liên hệ, Zalo hoặc hotline 0943 966 662, ghi rõ bề mặt và màu sắc mong muốn để kỹ thuật tư vấn và chuẩn bị mẫu phù hợp.</p></details>
+    </div>
+    <div style="margin-top:32px">
+      <div class="support-cta">
+        <div><h2>Cần tư vấn cho bề mặt của bạn?</h2><p>Gửi yêu cầu để kỹ thuật Sơn Lotus tư vấn hệ sơn phù hợp và chuẩn bị mẫu.</p></div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap"><a href="/lien-he" class="btn btn-primary">Gửi yêu cầu</a><a href="tel:0943966662" class="btn btn-outline" style="background:transparent;color:#fff;border-color:rgba(255,255,255,.5)">Gọi 0943 966 662</a></div>
+      </div>
+    </div>
   </div>
 </section>
 {{end}}

@@ -1,9 +1,7 @@
 {{define "search_results"}}
 <div class="search-results">
 {{range .}}
-  <p class="search-result-item"><a href="{{.URL}}">{{.Title}}</a> <span class="search-result-kind">({{.Kind}})</span></p>
-{{else}}
-  <p class="search-result-item">Không tìm thấy kết quả.</p>
+<p class="search-result-item"><a href="{{.URL}}">{{.Title}}</a> <span class="search-result-kind">· {{.Kind}}</span></p>
 {{end}}
 </div>
 {{end}}
