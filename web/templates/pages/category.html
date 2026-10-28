@@ -1,26 +1,147 @@
 {{define "content"}}
-<h1 class="text-3xl font-bold mb-6">{{.Data.Title}}</h1>
-<div class="flex flex-wrap gap-6">
-  <aside class="w-full lg:w-64">
-    <h2 class="font-bold mb-2">Danh mục</h2>
-    <ul>
-      <li><a href="/san-pham">Tất cả sản phẩm</a></li>
-      {{range .Data.Categories}}
-      <li><a href="/danh-muc/{{.Slug}}">{{.Name}}</a></li>
-      {{end}}
-    </ul>
-    <h2 class="font-bold mt-6 mb-2">Lọc nhanh</h2>
-    <ul>
-      <li><a href="/san-pham?vai-tro=primer">Sơn lót</a></li>
-      <li><a href="/san-pham?vai-tro=topcoat">Sơn phủ</a></li>
-      <li><a href="/san-pham?vai-tro=putty">Trám trét</a></li>
-      <li><a href="/san-pham?vai-tro=sealer">Chống thấm</a></li>
-    </ul>
-  </aside>
-  <div class="flex-1">
+{{if .Data.Filter.CategorySlug}}
+{{$desc := ""}}
+{{range .Data.Categories}}{{if eq .Slug $.Data.Filter.CategorySlug}}{{$desc = .ShortDescription}}{{end}}{{end}}
+{{$v := "visual-woodgrain"}}
+{{if eq .Data.Filter.CategorySlug "son-go-he-nuoc"}}{{$v = "visual-wood"}}{{else if eq .Data.Filter.CategorySlug "son-kim-loai-he-nuoc"}}{{$v = "visual-metal"}}{{else if eq .Data.Filter.CategorySlug "son-loa"}}{{$v = "visual-speaker"}}{{end}}
+<section class="category-page">
+  <div class="category-hero">
+    <div class="container category-hero-inner">
+      <div>
+        <nav class="category-breadcrumb" aria-label="Breadcrumb"><a href="/">Trang chủ</a><span class="category-breadcrumb-sep"></span><a href="/san-pham">Sản phẩm</a><span class="category-breadcrumb-sep"></span><span>{{.Data.Title}}</span></nav>
+        <p class="category-kicker">Sơn hệ nước</p>
+        <h1 class="category-title">{{.Data.Title}}</h1>
+        {{if $desc}}<p class="category-lead">{{$desc}}</p>{{else}}<p class="category-lead">Sơn hệ nước Sơn Lotus cho bề mặt này — an toàn, ít mùi và bền màu.</p>{{end}}
+        <div class="category-hero-actions">
+          <a href="/lien-he" class="btn btn-primary">Nhận mẫu miễn phí</a>
+          <a href="#san-pham-danh-muc" class="btn btn-outline" style="color:#fff;border-color:rgba(255,255,255,.5)">Xem hệ sản phẩm</a>
+        </div>
+        <div class="category-proof">
+          <span class="category-proof-item">Hệ nước 100%</span>
+          <span class="category-proof-item">Nội thất &amp; ngoại thất</span>
+          <span class="category-proof-item">Màu sắc đa dạng</span>
+        </div>
+      </div>
+      <div class="category-visual">
+        <div class="{{$v}}"></div>
+        {{if eq .Data.Filter.CategorySlug "son-loa"}}<span class="speaker-cone big"></span><span class="speaker-cone small"></span>{{end}}
+        <div class="visual-label"><strong>{{.Data.Title}}</strong><span>{{len .Data.Products}} sản phẩm trong danh mục</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="san-pham-danh-muc">
+  <div class="container">
+    <div class="section-header">
+      <p class="section-eyebrow">Hệ sản phẩm</p>
+      <h2 class="section-title">Sản phẩm {{.Data.Title}}</h2>
+    </div>
     <div id="catalog-grid">
       {{template "product_grid" .Data.Products}}
     </div>
   </div>
-</div>
+</section>
+
+<section class="section system-section">
+  <div class="container">
+    <div class="category-section-head">
+      <div><p class="section-eyebrow">Lợi ích nổi bật</p><h2 class="section-title">Một hệ sơn hoàn chỉnh</h2></div>
+      <p>Chọn đúng lớp sơn cho đúng vai trò: từ xử lý nền, tạo màu đến phủ bảo vệ — hệ nước, nhẹ mùi và bền màu.</p>
+    </div>
+    <div class="benefit-grid">
+      <div class="benefit-card"><h3>Tôn vẻ đẹp bề mặt</h3><p>Giữ vân và kết cấu tự nhiên của vật liệu trong khi bảo vệ lớp nền.</p></div>
+      <div class="benefit-card"><h3>Nhanh khô</h3><p>Nhiều dòng một thành phần, dùng ngay, giúp rút ngắn chu kỳ hoàn thiện.</p></div>
+      <div class="benefit-card"><h3>Bền &amp; dẻo dai</h3><p>Màng sơn chịu co giãn, hỗ trợ kháng nước, hóa chất và thời tiết.</p></div>
+      <div class="benefit-card"><h3>Thân thiện hơn</h3><p>Hệ nước, nhẹ mùi và không cần pha nhiều dung môi như hệ truyền thống.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section process-band">
+  <div class="container">
+    <p class="section-eyebrow">Quy trình</p>
+    <h2 class="section-title">Từ tư vấn đến bàn giao</h2>
+    <div class="landing-process">
+      <div class="landing-step"><p class="landing-step-num">01</p><h3>Tiếp nhận yêu cầu</h3><p>Tư vấn bề mặt, hiệu ứng màu và tiêu chuẩn kỹ thuật.</p></div>
+      <div class="landing-step"><p class="landing-step-num">02</p><h3>Pha mẫu</h3><p>R&amp;D pha mẫu và kiểm tra trên vật liệu thực.</p></div>
+      <div class="landing-step"><p class="landing-step-num">03</p><h3>Giao mẫu miễn phí</h3><p>Mẫu giao tận tay trong 48 giờ.</p></div>
+      <div class="landing-step"><p class="landing-step-num">04</p><h3>Sản xuất &amp; bàn giao</h3><p>Sản xuất theo lô sau khi phê duyệt mẫu.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section category-cta">
+  <div class="container category-cta-inner">
+    <div><h2>Cần tư vấn cho bề mặt của bạn?</h2><p>Liên hệ đội ngũ kỹ thuật Lotus để chọn đúng hệ sơn và nhận mẫu miễn phí.</p></div>
+    <div class="category-cta-actions">
+      <a href="/lien-he" class="btn btn-primary">Nhận báo giá</a>
+      <a href="tel:0943966662" class="btn btn-outline">Gọi 0943 966 662</a>
+    </div>
+  </div>
+</section>
+{{else}}
+<section class="page-hero">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Trang chủ</a><span>/</span><span>Sản phẩm</span></nav>
+    <h1>Danh mục sản phẩm</h1>
+    <p>Sản phẩm Sơn Lotus — dòng sơn hệ nước cao cấp cho gỗ, kim loại, nhựa và mọi bề mặt vật liệu. Công thức an toàn, ít mùi, pha màu theo yêu cầu.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <form action="/san-pham" method="get" hx-get="/san-pham" hx-target="#catalog-grid" hx-trigger="change" class="form-card" style="margin-bottom:2rem">
+      <div>
+        <label class="field-label" for="f-cat">Danh mục</label>
+        <select id="f-cat" name="danh-muc" class="field-input">
+          <option value="">Tất cả danh mục</option>
+          {{range .Data.Categories}}<option value="{{.Slug}}" {{if eq $.Data.Filter.CategorySlug .Slug}}selected{{end}}>{{.Name}}</option>{{end}}
+        </select>
+      </div>
+      <div>
+        <label class="field-label" for="f-role">Vai trò</label>
+        <select id="f-role" name="vai-tro" class="field-input">
+          <option value="">Tất cả vai trò</option>
+          <option value="primer" {{if eq .Data.Filter.CoatingRole "primer"}}selected{{end}}>Sơn lót</option>
+          <option value="topcoat" {{if eq .Data.Filter.CoatingRole "topcoat"}}selected{{end}}>Sơn phủ</option>
+          <option value="putty" {{if eq .Data.Filter.CoatingRole "putty"}}selected{{end}}>Trám trét</option>
+          <option value="sealer" {{if eq .Data.Filter.CoatingRole "sealer"}}selected{{end}}>Chống thấm</option>
+          <option value="stain" {{if eq .Data.Filter.CoatingRole "stain"}}selected{{end}}>Màu tinh</option>
+        </select>
+      </div>
+      <div>
+        <label class="field-label" for="f-finish">Độ bóng</label>
+        <select id="f-finish" name="do-bong" class="field-input">
+          <option value="">Tất cả độ bóng</option>
+          <option value="gloss" {{if eq .Data.Filter.FinishType "gloss"}}selected{{end}}>Bóng</option>
+          <option value="matte" {{if eq .Data.Filter.FinishType "matte"}}selected{{end}}>Mờ</option>
+          <option value="satin" {{if eq .Data.Filter.FinishType "satin"}}selected{{end}}>Bán bóng</option>
+          <option value="flat" {{if eq .Data.Filter.FinishType "flat"}}selected{{end}}>Không bóng</option>
+        </select>
+      </div>
+      <div>
+        <label class="field-label" for="f-area">Khu vực</label>
+        <select id="f-area" name="khu-vuc" class="field-input">
+          <option value="">Trong &amp; ngoài trời</option>
+          <option value="indoor" {{if eq .Data.Filter.UsageArea "indoor"}}selected{{end}}>Nội thất</option>
+          <option value="outdoor" {{if eq .Data.Filter.UsageArea "outdoor"}}selected{{end}}>Ngoại thất</option>
+          <option value="both" {{if eq .Data.Filter.UsageArea "both"}}selected{{end}}>Trong &amp; ngoài trời</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary">Lọc sản phẩm</button>
+    </form>
+    <div style="margin-bottom:1.5rem;display:flex;gap:.5rem;flex-wrap:wrap">
+      <a href="/san-pham" class="filter-tab">Tất cả</a>
+      <a href="/san-pham?vai-tro=primer" class="filter-tab">Sơn lót</a>
+      <a href="/san-pham?vai-tro=topcoat" class="filter-tab">Sơn phủ</a>
+      <a href="/san-pham?vai-tro=putty" class="filter-tab">Trám trét</a>
+      <a href="/san-pham?vai-tro=sealer" class="filter-tab">Chống thấm</a>
+    </div>
+    <div id="catalog-grid">
+      {{template "product_grid" .Data.Products}}
+    </div>
+  </div>
+</section>
+{{end}}
 {{end}}

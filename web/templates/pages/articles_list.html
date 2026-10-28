@@ -1,15 +1,46 @@
 {{define "content"}}
-<h1 class="text-3xl font-bold mb-6">{{.Data.Title}}</h1>
-{{if .Data.Articles}}
-<ul>
-{{range .Data.Articles}}
-  <li class="bg-white border rounded p-4 mb-4">
-    <h2 class="font-bold"><a href="/bai-viet/{{.Slug}}">{{.Title}}</a></h2>
-    <p>{{.Excerpt}}</p>
-  </li>
-{{end}}
-</ul>
-{{else}}
-<p>Chưa có bài viết trong mục này.</p>
-{{end}}
+<section class="page-hero">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Trang chủ</a><span>/</span><span>{{.Data.Title}}</span></nav>
+    <h1>{{.Data.Title}}</h1>
+    <p>Bài viết, dự án đã thi công và hướng dẫn kỹ thuật sơn hệ nước Sơn Lotus.</p>
+  </div>
+</section>
+<section class="section">
+  <div class="container">
+    <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:2rem" role="tablist" aria-label="Chuyên mục bài viết">
+      <a href="/du-an" class="filter-tab" {{if eq .Data.Title "Dự án đã thi công"}}aria-selected="true"{{end}}>Dự án</a>
+      <a href="/ho-tro-ky-thuat" class="filter-tab" {{if eq .Data.Title "Hỗ trợ kỹ thuật"}}aria-selected="true"{{end}}>Hỗ trợ kỹ thuật</a>
+      <a href="/giai-phap" class="filter-tab" {{if eq .Data.Title "Giải pháp ngành"}}aria-selected="true"{{end}}>Giải pháp</a>
+    </div>
+    {{if .Data.Articles}}
+    <div class="article-list">
+    {{range .Data.Articles}}
+      <article class="article-card-v2">
+        <div class="article-card-v2-img">
+          {{if .ThumbnailURL}}
+          <picture>
+            <source srcset="{{webpURL .ThumbnailURL}}" type="image/webp">
+            <img src="{{.ThumbnailURL}}" alt="{{.Title}}" loading="lazy">
+          </picture>
+          {{else}}
+          <div class="article-visual"><div class="visual-woodgrain"></div></div>
+          {{end}}
+        </div>
+        <div class="article-card-v2-body">
+          <h2 class="article-card-v2-title"><a href="/bai-viet/{{.Slug}}">{{.Title}}</a></h2>
+          <p class="article-card-v2-excerpt">{{.Excerpt}}</p>
+          <div class="article-card-v2-footer">
+            <span>{{.AuthorName}}</span>
+            <a href="/bai-viet/{{.Slug}}" class="article-read-more">Đọc tiếp →</a>
+          </div>
+        </div>
+      </article>
+    {{end}}
+    </div>
+    {{else}}
+    <p>Chưa có bài viết trong mục này.</p>
+    {{end}}
+  </div>
+</section>
 {{end}}
