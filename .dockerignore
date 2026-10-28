@@ -1,0 +1,10 @@
+data/
+.env
+.git
+bin/
+*.db
+*.db-wal
+*.db-shm
+*.db-journal
+.paseo/
+.agents/

@@ -1,0 +1,26 @@
+{{define "content"}}
+<h1 class="text-3xl font-bold mb-6">{{.Data.Title}}</h1>
+<div class="flex flex-wrap gap-6">
+  <aside class="w-full lg:w-64">
+    <h2 class="font-bold mb-2">Danh mục</h2>
+    <ul>
+      <li><a href="/san-pham">Tất cả sản phẩm</a></li>
+      {{range .Data.Categories}}
+      <li><a href="/danh-muc/{{.Slug}}">{{.Name}}</a></li>
+      {{end}}
+    </ul>
+    <h2 class="font-bold mt-6 mb-2">Lọc nhanh</h2>
+    <ul>
+      <li><a href="/san-pham?vai-tro=primer">Sơn lót</a></li>
+      <li><a href="/san-pham?vai-tro=topcoat">Sơn phủ</a></li>
+      <li><a href="/san-pham?vai-tro=putty">Trám trét</a></li>
+      <li><a href="/san-pham?vai-tro=sealer">Chống thấm</a></li>
+    </ul>
+  </aside>
+  <div class="flex-1">
+    <div id="catalog-grid">
+      {{template "product_grid" .Data.Products}}
+    </div>
+  </div>
+</div>
+{{end}}

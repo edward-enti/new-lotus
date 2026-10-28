@@ -1,0 +1,43 @@
+{{define "content"}}
+<h1 class="text-3xl font-bold mb-4">Liên hệ Sơn Lotus</h1>
+<p class="mb-4">Công ty TNHH Bích Trang — tư vấn kỹ thuật, báo giá và đăng ký đại lý sơn hệ nước Sơn Lotus.</p>
+<p class="mb-6">Bản đồ và địa chỉ nhà máy/văn phòng sẽ được cập nhật tại đây cùng số hotline chính thức.</p>
+{{if .Data.Success}}
+<div class="bg-green-100 border rounded p-4 mb-6" role="status">Cảm ơn bạn! Yêu cầu của bạn đã được gửi, Sơn Lotus sẽ liên hệ lại sớm.</div>
+{{end}}
+{{if .Data.Error}}
+<div class="bg-red-100 border rounded p-4 mb-6" role="alert">{{.Data.Error}}</div>
+{{end}}
+<form action="/lien-he" method="post" hx-post="/lien-he" hx-target="body" class="bg-white border rounded p-6 flex flex-col gap-4 max-w-xl">
+  <input type="hidden" name="csrf_token" value="{{.Data.CSRFToken}}">
+  <div>
+    <label class="block" for="ct-name">Họ tên *</label>
+    <input id="ct-name" name="ten" type="text" maxlength="100" required class="border rounded px-3 py-2 w-full">
+  </div>
+  <div>
+    <label class="block" for="ct-phone">Số điện thoại *</label>
+    <input id="ct-phone" name="dien-thoai" type="tel" maxlength="30" required class="border rounded px-3 py-2 w-full">
+  </div>
+  <div>
+    <label class="block" for="ct-email">Email</label>
+    <input id="ct-email" name="email" type="email" class="border rounded px-3 py-2 w-full">
+  </div>
+  <div>
+    <label class="block" for="ct-company">Công ty</label>
+    <input id="ct-company" name="cong-ty" type="text" class="border rounded px-3 py-2 w-full">
+  </div>
+  <div>
+    <label class="block" for="ct-area">Diện tích cần sơn (m²)</label>
+    <input id="ct-area" name="dien-tich" type="number" step="any" min="0" class="border rounded px-3 py-2 w-full">
+  </div>
+  <div>
+    <label class="block" for="ct-msg">Nội dung *</label>
+    <textarea id="ct-msg" name="noi-dung" maxlength="2000" required class="border rounded px-3 py-2 w-full" rows="5"></textarea>
+  </div>
+  <div style="display:none" aria-hidden="true">
+    <label for="ct-website">Website</label>
+    <input id="ct-website" name="website_url" type="text" tabindex="-1" autocomplete="off">
+  </div>
+  <button type="submit" class="bg-lotus text-white rounded px-4 py-2">Gửi yêu cầu</button>
+</form>
+{{end}}

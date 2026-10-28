@@ -1,0 +1,55 @@
+{{define "base"}}<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{.SEO.Title}}</title>
+<meta name="description" content="{{.SEO.Description}}">
+{{if .SEO.CanonicalURL}}<link rel="canonical" href="{{.SEO.CanonicalURL}}">{{end}}
+<meta property="og:title" content="{{.SEO.Title}}">
+<meta property="og:description" content="{{.SEO.Description}}">
+<meta property="og:type" content="{{.SEO.OGType}}">
+{{if .SEO.OGImage}}<meta property="og:image" content="{{.SEO.OGImage}}">{{end}}
+{{if .SEO.JSONLD}}<script type="application/ld+json">{{.SEO.JSONLD}}</script>{{end}}
+<link rel="stylesheet" href="/static/css/app.css">
+<script src="/static/js/htmx.min.js"></script>
+<script defer src="/static/js/alpine.min.js"></script>
+</head>
+<body class="bg-slatemist text-slateink font-sans">
+<header class="bg-white shadow">
+  <nav class="max-w-6xl mx-auto px-4 py-4 flex flex-wrap items-center gap-4" aria-label="Điều hướng chính">
+    <a href="/" class="text-xl font-bold text-lotus">Sơn Lotus</a>
+    <a href="/san-pham" class="px-2 py-2">Sản phẩm</a>
+    <a href="/du-an" class="px-2 py-2">Dự án</a>
+    <a href="/ho-tro-ky-thuat" class="px-2 py-2">Hỗ trợ kỹ thuật</a>
+    <a href="/giai-phap" class="px-2 py-2">Giải pháp</a>
+    <a href="/cong-cu/tinh-luong-son" class="px-2 py-2">Tính lượng sơn</a>
+    <a href="/gioi-thieu" class="px-2 py-2">Giới thiệu</a>
+    <a href="/lien-he" class="px-2 py-2">Liên hệ</a>
+    <form class="ml-auto flex gap-2" role="search" action="/api/htmx/tim-kiem" method="get">
+      <label class="sr-only" for="site-search">Tìm kiếm sản phẩm, bài viết</label>
+      <input id="site-search" name="q" type="search" placeholder="Tìm kiếm: sơn giả gỗ…" class="border rounded px-3 py-2"
+        hx-get="/api/htmx/tim-kiem" hx-target="#search-results" hx-trigger="keyup changed delay:300ms">
+      <button type="submit" class="bg-lotus text-white rounded px-4 py-2">Tìm</button>
+    </form>
+  </nav>
+  <div id="search-results"></div>
+</header>
+<main class="max-w-6xl mx-auto px-4 py-8">
+{{template "content" .}}
+</main>
+<footer class="bg-white border-t mt-12">
+  <div class="max-w-6xl mx-auto px-4 py-8">
+    <p class="font-bold">Sơn Lotus — Công ty TNHH Bích Trang</p>
+    <p>Sơn hệ nước: sơn gỗ, sơn giả gỗ, sơn kim loại, sơn ngói, sơn loa, composite và chống thấm.</p>
+    <p><a href="/lien-he">Liên hệ</a> · <a href="/sitemap.xml">Sitemap</a></p>
+  </div>
+</footer>
+<div class="fixed bottom-4 right-4 flex flex-col gap-2" aria-label="Liên hệ nhanh">
+  <a href="tel:+84" class="bg-lotus text-white rounded-full px-4 py-3 text-center">Gọi Hotline</a>
+  <a href="https://zalo.me/" class="bg-wood text-white rounded-full px-4 py-3 text-center">Chat Zalo Tư Vấn Kỹ Thuật</a>
+  <a href="/cong-cu/tinh-luong-son" class="bg-white border rounded-full px-4 py-3 text-center">Tính Lượng Sơn</a>
+</div>
+</body>
+</html>
+{{end}}

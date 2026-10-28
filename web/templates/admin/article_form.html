@@ -1,0 +1,64 @@
+{{define "content"}}
+<h1 class="text-3xl font-bold mb-4">{{if .Data.IsNew}}Thêm bài viết{{else}}Sửa bài viết{{end}}</h1>
+{{if .Data.Error}}
+<div class="bg-red-100 border rounded p-4 mb-6" role="alert">{{.Data.Error}}</div>
+{{end}}
+<form action="{{.Data.Action}}" method="post" class="bg-white border rounded p-6 flex flex-col gap-4 max-w-2xl">
+  <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
+  <div>
+    <label class="block" for="af-type">Loại *</label>
+    <select id="af-type" name="type" required class="border rounded px-3 py-2 w-full">
+      <option value="project" {{if eq .Data.Article.Type "project"}}selected{{end}}>Dự án</option>
+      <option value="tech_support" {{if eq .Data.Article.Type "tech_support"}}selected{{end}}>Hỗ trợ kỹ thuật</option>
+      <option value="solution" {{if eq .Data.Article.Type "solution"}}selected{{end}}>Giải pháp</option>
+      <option value="news" {{if eq .Data.Article.Type "news"}}selected{{end}}>Tin tức</option>
+    </select>
+  </div>
+  <div>
+    <label class="block" for="af-title">Tiêu đề *</label>
+    <input id="af-title" name="title" type="text" required maxlength="300" value="{{.Data.Article.Title}}" class="border rounded px-3 py-2 w-full">
+  </div>
+  <div>
+    <label class="block" for="af-slug">Slug *</label>
+    <input id="af-slug" name="slug" type="text" required maxlength="200" value="{{.Data.Article.Slug}}" class="border rounded px-3 py-2 w-full">
+  </div>
+  <div>
+    <label class="block" for="af-excerpt">Tóm tắt</label>
+    <textarea id="af-excerpt" name="excerpt" rows="3" class="border rounded px-3 py-2 w-full">{{.Data.Article.Excerpt}}</textarea>
+  </div>
+  <div>
+    <label class="block" for="af-content">Nội dung (HTML lưu trữ sẽ được hiển thị escaped ở trang công khai)</label>
+    <textarea id="af-content" name="content_html" rows="10" class="border rounded px-3 py-2 w-full">{{.Data.Article.ContentHTML}}</textarea>
+  </div>
+  <div>
+    <label class="block" for="af-thumb">Ảnh đại diện (URL)</label>
+    <input id="af-thumb" name="thumbnail_url" type="text" value="{{.Data.Article.ThumbnailURL}}" class="border rounded px-3 py-2 w-full">
+  </div>
+  <div>
+    <label class="block" for="af-author">Tác giả</label>
+    <input id="af-author" name="author_name" type="text" value="{{.Data.Article.AuthorName}}" class="border rounded px-3 py-2 w-full">
+  </div>
+  <div>
+    <label class="block" for="af-category">Danh mục liên quan</label>
+    <select id="af-category" name="related_category_id" class="border rounded px-3 py-2 w-full">
+      <option value="">— Không có —</option>
+      {{range .Data.Categories}}
+      <option value="{{.ID}}" {{if eq .ID $.Data.RelatedCategoryID}}selected{{end}}>{{.Name}}</option>
+      {{end}}
+    </select>
+  </div>
+  <div>
+    <label class="block" for="af-seo-title">Tiêu đề SEO</label>
+    <input id="af-seo-title" name="seo_title" type="text" value="{{.Data.Article.SEOTitle}}" class="border rounded px-3 py-2 w-full">
+  </div>
+  <div>
+    <label class="block" for="af-seo-desc">Mô tả SEO</label>
+    <textarea id="af-seo-desc" name="seo_description" rows="2" class="border rounded px-3 py-2 w-full">{{.Data.Article.SEODescription}}</textarea>
+  </div>
+  <div class="flex gap-6">
+    <label><input type="checkbox" name="is_featured" {{if .Data.Article.IsFeatured}}checked{{end}}> Nổi bật</label>
+    <label><input type="checkbox" name="is_published" {{if .Data.Article.IsPublished}}checked{{end}}> Đã xuất bản</label>
+  </div>
+  <button type="submit" class="bg-lotus text-white rounded px-4 py-2">Lưu bài viết</button>
+</form>
+{{end}}

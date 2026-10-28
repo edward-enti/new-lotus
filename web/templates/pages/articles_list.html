@@ -1,0 +1,15 @@
+{{define "content"}}
+<h1 class="text-3xl font-bold mb-6">{{.Data.Title}}</h1>
+{{if .Data.Articles}}
+<ul>
+{{range .Data.Articles}}
+  <li class="bg-white border rounded p-4 mb-4">
+    <h2 class="font-bold"><a href="/bai-viet/{{.Slug}}">{{.Title}}</a></h2>
+    <p>{{.Excerpt}}</p>
+  </li>
+{{end}}
+</ul>
+{{else}}
+<p>Chưa có bài viết trong mục này.</p>
+{{end}}
+{{end}}

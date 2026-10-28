@@ -1,0 +1,17 @@
+{{define "calculator_result"}}
+<div class="border rounded p-4">
+{{if .Error}}
+  <p role="alert">{{.Error}}</p>
+{{else if .Calculated}}
+  <p><strong>Lượng sơn cần dùng: {{printf "%.2f" .Liters}} lít</strong> (đã cộng 5% hao hụt)</p>
+  <p>Diện tích {{printf "%.2f" .AreaM2}} m² · {{.Coats}} lớp · Độ phủ {{printf "%.2f" .Coverage}} m²/lít</p>
+  <p>Gợi ý đóng gói:
+    {{if gt .Mix.Pack18L 0}}Thùng 18L × {{.Mix.Pack18L}} {{end}}
+    {{if gt .Mix.Pack38L 0}}Lon 3.8L × {{.Mix.Pack38L}} {{end}}
+    {{if gt .Mix.Pack08L 0}}Lon 0.8L × {{.Mix.Pack08L}}{{end}}
+  </p>
+{{else}}
+  <p>Nhập thông số để tính lượng sơn.</p>
+{{end}}
+</div>
+{{end}}

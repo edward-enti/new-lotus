@@ -1,0 +1,14 @@
+{{define "content"}}
+<h1 class="text-3xl font-bold mb-4">Bài viết</h1>
+<p class="mb-6"><a href="/admin/articles/new" class="bg-lotus text-white rounded px-4 py-2 inline-block">Thêm bài viết mới</a></p>
+<table class="bg-white border rounded w-full">
+  <thead><tr><th class="text-left p-2">Tiêu đề</th><th class="text-left p-2">Loại</th><th class="text-left p-2">Slug</th><th class="text-left p-2">Xuất bản</th><th class="text-left p-2"></th></tr></thead>
+  <tbody>
+  {{range .Data.Articles}}
+    <tr class="border-t"><td class="p-2">{{.Title}}</td><td class="p-2">{{.Type}}</td><td class="p-2">{{.Slug}}</td><td class="p-2">{{if .IsPublished}}Có{{else}}Không{{end}}</td><td class="p-2"><a href="/admin/articles/{{.ID}}/edit">Sửa</a></td></tr>
+  {{else}}
+    <tr><td class="p-2" colspan="5">Chưa có bài viết.</td></tr>
+  {{end}}
+  </tbody>
+</table>
+{{end}}

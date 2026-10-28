@@ -1,0 +1,7 @@
+{
+  "worktree": {
+    "setup": "./.paseo/setup.sh",
+    "teardown": "./.paseo/teardown.sh",
+    "servicePorts": { "range": "3000-3060" }
+  }
+}

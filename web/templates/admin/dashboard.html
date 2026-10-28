@@ -1,0 +1,23 @@
+{{define "content"}}
+<h1 class="text-3xl font-bold mb-6">Tổng quan quản trị</h1>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10">
+  <div class="bg-white border rounded p-4"><p class="text-3xl font-bold">{{.Data.ProductCount}}</p><p>Sản phẩm</p><p><a href="/admin/products">Quản lý sản phẩm</a></p></div>
+  <div class="bg-white border rounded p-4"><p class="text-3xl font-bold">{{.Data.ArticleCount}}</p><p>Bài viết</p><p><a href="/admin/articles">Quản lý bài viết</a></p></div>
+  <div class="bg-white border rounded p-4"><p class="text-3xl font-bold">{{.Data.UnreadCount}}</p><p>Yêu cầu chưa xử lý (mới)</p><p><a href="/admin/inquiries">Quản lý yêu cầu</a></p></div>
+</div>
+<section>
+  <h2 class="text-2xl font-bold mb-4">Top chuyển hướng 301 (theo lượt truy cập)</h2>
+  {{if .Data.TopRedirects}}
+  <table class="bg-white border rounded w-full">
+    <thead><tr><th class="text-left p-2">Đường cũ</th><th class="text-left p-2">Đường mới</th><th class="text-left p-2">Lượt</th></tr></thead>
+    <tbody>
+    {{range .Data.TopRedirects}}
+      <tr class="border-t"><td class="p-2">{{.OldPath}}</td><td class="p-2">{{.NewPath}}</td><td class="p-2">{{.Hits}}</td></tr>
+    {{end}}
+    </tbody>
+  </table>
+  {{else}}
+  <p>Chưa có chuyển hướng nào được ghi nhận.</p>
+  {{end}}
+</section>
+{{end}}

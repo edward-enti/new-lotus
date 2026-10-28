@@ -1,0 +1,13 @@
+{{define "content"}}
+<h1 class="text-3xl font-bold mb-4">{{.Data.Article.Title}}</h1>
+<p class="mb-4 text-slate-600">{{.Data.Article.Excerpt}}</p>
+<div class="bg-white border rounded p-6 mb-6">
+  <p>{{.Data.Article.ContentHTML}}</p>
+</div>
+{{if .Data.Related}}
+<section>
+  <h2 class="font-bold mb-4">Sản phẩm liên quan</h2>
+  {{template "product_grid" .Data.Related}}
+</section>
+{{end}}
+{{end}}

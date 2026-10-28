@@ -1,0 +1,89 @@
+{{define "content"}}
+<nav aria-label="Breadcrumb" class="mb-4"><a href="/san-pham">Sản phẩm</a> / {{.Data.Product.Name}}</nav>
+<h1 class="text-3xl font-bold mb-4">{{.Data.Product.Name}}</h1>
+<p class="mb-4">{{.Data.Product.ShortSummary}}</p>
+
+{{if .Data.Product.ThumbnailURL}}
+<picture>
+  <source srcset="{{webpURL .Data.Product.ThumbnailURL}}" type="image/webp">
+  <img src="{{.Data.Product.ThumbnailURL}}" alt="{{.Data.Product.Name}}" loading="lazy" class="mb-6 max-w-full">
+</picture>
+{{end}}
+{{range .Data.Product.Images}}
+<picture>
+  <source srcset="{{webpURL .}}" type="image/webp">
+  <img src="{{.}}" alt="" loading="lazy" class="mb-4 max-w-full">
+</picture>
+{{end}}
+
+{{if .Data.Product.Colors}}
+<section class="mb-6" x-data="{ active: '{{(index .Data.Product.Colors 0).Hex}}' }">
+  <h2 class="font-bold mb-2">Màu sắc</h2>
+  <div class="flex gap-2 flex-wrap">
+  {{range .Data.Product.Colors}}
+    <button type="button" @click="active = '{{.Hex}}'" :style="{ backgroundColor: '{{.Hex}}' }" class="w-11 h-11 rounded-full border" title="{{.Name}} ({{.Code}})" aria-label="Màu {{.Name}}"></button>
+  {{end}}
+  </div>
+  <p class="mt-2">Màu đang chọn: <span x-text="active"></span></p>
+</section>
+{{end}}
+
+<section class="mb-6 bg-white border rounded p-4">
+  <h2 class="font-bold mb-2">Thông số kỹ thuật</h2>
+  <table>
+    <tr><th class="text-left pr-4">Độ phủ</th><td>{{.Data.Product.CoverageRate}} m²/lít</td></tr>
+    <tr><th class="text-left pr-4">Vai trò</th><td>{{.Data.Product.CoatingRole}}</td></tr>
+    <tr><th class="text-left pr-4">Độ bóng</th><td>{{.Data.Product.FinishType}}</td></tr>
+    <tr><th class="text-left pr-4">Khu vực</th><td>{{.Data.Product.UsageArea}}</td></tr>
+    {{if .Data.Product.Specs.Dilution}}<tr><th class="text-left pr-4">Pha loãng</th><td>{{.Data.Product.Specs.Dilution}}</td></tr>{{end}}
+  </table>
+  {{if .Data.Product.Features}}
+  <ul class="list-disc pl-6 mt-2">
+  {{range .Data.Product.Features}}<li>{{.}}</li>{{end}}
+  </ul>
+  {{end}}
+  {{if .Data.Product.Packaging}}
+  <p class="mt-2">Quy cách:
+  {{range .Data.Product.Packaging}}<span class="border rounded px-2 py-1 inline-block mr-1">{{.}}</span>{{end}}
+  </p>
+  {{end}}
+</section>
+
+<section class="mb-6">
+  <h2 class="font-bold mb-2">Mô tả</h2>
+  <p>{{.Data.Product.DescriptionHTML}}</p>
+  {{if .Data.Product.ApplicationGuideHTML}}
+  <h2 class="font-bold mt-4 mb-2">Hướng dẫn thi công</h2>
+  <p>{{.Data.Product.ApplicationGuideHTML}}</p>
+  {{end}}
+</section>
+
+{{if .Data.Product.TDSFileURL}}<p><a href="{{.Data.Product.TDSFileURL}}">Tải TDS (Technical Data Sheet)</a></p>{{end}}
+{{if .Data.Product.MSDSFileURL}}<p><a href="{{.Data.Product.MSDSFileURL}}">Tải MSDS (Safety Data Sheet)</a></p>{{end}}
+
+<section class="mb-6 bg-white border rounded p-4">
+  <h2 class="font-bold mb-2">Tính lượng sơn cho sản phẩm này</h2>
+  <form hx-post="/api/htmx/tinh-luong-son" hx-target="#calc-result-product" class="flex flex-wrap gap-4 items-end">
+    <div>
+      <label class="block" for="pd-area">Diện tích (m²)</label>
+      <input id="pd-area" name="dien-tich" type="number" step="any" min="0" required class="border rounded px-3 py-2">
+    </div>
+    <div>
+      <label class="block" for="pd-coats">Số lớp sơn</label>
+      <input id="pd-coats" name="so-lop" type="number" min="1" value="2" required class="border rounded px-3 py-2">
+    </div>
+    <input type="hidden" name="do-phu" value="{{.Data.Product.CoverageRate}}">
+    <button type="submit" class="bg-lotus text-white rounded px-4 py-2">Tính lượng sơn</button>
+  </form>
+  <div id="calc-result-product" class="mt-4"></div>
+</section>
+
+<p class="mb-6"><a href="/lien-he" class="bg-wood text-white rounded px-4 py-2 inline-block">Nhận Báo Giá</a></p>
+
+{{if .Data.Related}}
+<section>
+  <h2 class="font-bold mb-4">Sản phẩm liên quan</h2>
+  {{template "product_grid" .Data.Related}}
+</section>
+{{end}}
+{{end}}

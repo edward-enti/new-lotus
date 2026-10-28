@@ -1,0 +1,69 @@
+{{define "content"}}
+<section class="bg-lotus text-white rounded p-8 mb-10">
+  <h1 class="text-3xl font-bold mb-2">Sơn Lotus — Sơn Hệ Nước Cao Cấp</h1>
+  <p>Sơn gỗ, sơn giả gỗ, sơn kim loại, sơn ngói và chống thấm hệ nước: không mùi, an toàn, bền đẹp.</p>
+  <p class="mt-4"><a href="/san-pham" class="bg-white text-lotus rounded px-4 py-2 inline-block">Xem tất cả sản phẩm</a></p>
+</section>
+
+<section class="mb-10">
+  <h2 class="text-2xl font-bold mb-4">Danh mục sản phẩm</h2>
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+  {{range .Data.Categories}}
+    <a href="/danh-muc/{{.Slug}}" class="bg-white border rounded p-4 block">
+      <h3 class="font-bold text-lotus">{{.Name}}</h3>
+      <p>{{.ShortDescription}}</p>
+    </a>
+  {{else}}
+    <p>Chưa có danh mục.</p>
+  {{end}}
+  </div>
+</section>
+
+<section class="mb-10 bg-white border rounded p-6">
+  <h2 class="text-2xl font-bold mb-4">Vì sao chọn sơn hệ nước?</h2>
+  <ul class="list-disc pl-6">
+    <li>Không mùi, Low VOC, an toàn cho sức khỏe và trẻ em.</li>
+    <li>Không cháy, thân thiện môi trường.</li>
+    <li>Bám dính cao, bền màu, kháng tia UV và chống rỉ sét.</li>
+    <li>Đạt chuẩn xuất khẩu Châu Âu và Mỹ.</li>
+  </ul>
+</section>
+
+<section class="mb-10">
+  <h2 class="text-2xl font-bold mb-4">Sản phẩm nổi bật</h2>
+  {{template "product_grid" .Data.Featured}}
+</section>
+
+<section class="mb-10 bg-white border rounded p-6">
+  <h2 class="text-2xl font-bold mb-4">Tính lượng sơn nhanh</h2>
+  <form hx-post="/api/htmx/tinh-luong-son" hx-target="#calc-result-home" class="flex flex-wrap gap-4 items-end">
+    <div>
+      <label class="block" for="home-area">Diện tích (m²)</label>
+      <input id="home-area" name="dien-tich" type="number" step="any" min="0" required class="border rounded px-3 py-2">
+    </div>
+    <div>
+      <label class="block" for="home-coats">Số lớp sơn</label>
+      <input id="home-coats" name="so-lop" type="number" min="1" value="2" required class="border rounded px-3 py-2">
+    </div>
+    <div>
+      <label class="block" for="home-coverage">Độ phủ (m²/lít)</label>
+      <input id="home-coverage" name="do-phu" type="number" step="any" min="0.1" value="10" required class="border rounded px-3 py-2">
+    </div>
+    <button type="submit" class="bg-lotus text-white rounded px-4 py-2">Tính lượng sơn</button>
+  </form>
+  <div id="calc-result-home" class="mt-4"></div>
+</section>
+
+<section class="mb-10">
+  <h2 class="text-2xl font-bold mb-4">Dự án &amp; Hướng dẫn kỹ thuật mới nhất</h2>
+  {{if .Data.Articles}}
+  <ul class="list-disc pl-6">
+  {{range .Data.Articles}}
+    <li><a href="/bai-viet/{{.Slug}}">{{.Title}}</a></li>
+  {{end}}
+  </ul>
+  {{else}}
+  <p>Chưa có bài viết. Các bài dự án và hướng dẫn kỹ thuật sẽ xuất hiện tại đây.</p>
+  {{end}}
+</section>
+{{end}}

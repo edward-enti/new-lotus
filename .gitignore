@@ -1,0 +1,12 @@
+# SonLotus — gitignore (Phase 1, created BEFORE any seed data or server run)
+data/
+*.db
+*.db-wal
+*.db-shm
+*.db-journal
+bin/
+.env
+.DS_Store
+# Generated Tailwind output (build artifact, never hand-edited);
+# the committed input is web/static/css/input.css.
+web/static/css/app.css

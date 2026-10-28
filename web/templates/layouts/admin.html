@@ -1,0 +1,30 @@
+{{define "admin"}}<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quản trị — Sơn Lotus</title>
+<link rel="stylesheet" href="/static/css/app.css">
+</head>
+<body class="bg-slatemist text-slateink font-sans">
+<header class="bg-white shadow">
+  <nav class="max-w-6xl mx-auto px-4 py-4 flex flex-wrap items-center gap-4" aria-label="Điều hướng quản trị">
+    <a href="/admin" class="text-xl font-bold text-lotus">Sơn Lotus — Quản trị</a>
+    {{if .ShowNav}}
+    <a href="/admin/products" class="px-2 py-2">Sản phẩm</a>
+    <a href="/admin/articles" class="px-2 py-2">Bài viết</a>
+    <a href="/admin/inquiries" class="px-2 py-2">Yêu cầu khách hàng</a>
+    <a href="/" class="px-2 py-2">Xem trang công khai</a>
+    <form action="/admin/logout" method="post" class="ml-auto">
+      <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
+      <button type="submit" class="bg-white border rounded px-4 py-2">Đăng xuất</button>
+    </form>
+    {{end}}
+  </nav>
+</header>
+<main class="max-w-6xl mx-auto px-4 py-8">
+{{template "content" .}}
+</main>
+</body>
+</html>
+{{end}}

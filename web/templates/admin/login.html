@@ -1,0 +1,18 @@
+{{define "content"}}
+<h1 class="text-3xl font-bold mb-4">Đăng nhập quản trị</h1>
+{{if .Data.Error}}
+<div class="bg-red-100 border rounded p-4 mb-6" role="alert">{{.Data.Error}}</div>
+{{end}}
+<form action="/admin/login" method="post" class="bg-white border rounded p-6 flex flex-col gap-4 max-w-md">
+  <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
+  <div>
+    <label class="block" for="login-user">Tên đăng nhập</label>
+    <input id="login-user" name="username" type="text" required autocomplete="username" class="border rounded px-3 py-2 w-full">
+  </div>
+  <div>
+    <label class="block" for="login-pass">Mật khẩu</label>
+    <input id="login-pass" name="password" type="password" required autocomplete="current-password" class="border rounded px-3 py-2 w-full">
+  </div>
+  <button type="submit" class="bg-lotus text-white rounded px-4 py-2">Đăng nhập</button>
+</form>
+{{end}}

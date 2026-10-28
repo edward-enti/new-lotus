@@ -1,0 +1,27 @@
+{{define "content"}}
+<h1 class="text-3xl font-bold mb-4">Tính lượng sơn</h1>
+<p class="mb-6">Nhập diện tích cần sơn, số lớp sơn và độ phủ của sản phẩm để tính lượng sơn cần dùng (đã cộng 5% hao hụt).</p>
+<form hx-post="/api/htmx/tinh-luong-son" hx-target="#calc-result-page" class="bg-white border rounded p-6 flex flex-wrap gap-4 items-end">
+  <div>
+    <label class="block" for="calc-area">Diện tích (m²)</label>
+    <input id="calc-area" name="dien-tich" type="number" step="any" min="0" required class="border rounded px-3 py-2">
+  </div>
+  <div>
+    <label class="block" for="calc-coats">Số lớp sơn</label>
+    <input id="calc-coats" name="so-lop" type="number" min="1" value="2" required class="border rounded px-3 py-2">
+  </div>
+  <div>
+    <label class="block" for="calc-product">Sản phẩm (độ phủ tự động)</label>
+    <select id="calc-product" name="san-pham" class="border rounded px-3 py-2">
+      <option value="">— Nhập độ phủ thủ công —</option>
+      {{range .Data.Products}}<option value="{{.Slug}}">{{.Name}} ({{.CoverageRate}} m²/lít)</option>{{end}}
+    </select>
+  </div>
+  <div>
+    <label class="block" for="calc-coverage">Độ phủ (m²/lít)</label>
+    <input id="calc-coverage" name="do-phu" type="number" step="any" min="0.1" class="border rounded px-3 py-2">
+  </div>
+  <button type="submit" class="bg-lotus text-white rounded px-4 py-2">Tính lượng sơn</button>
+</form>
+<div id="calc-result-page" class="mt-4"></div>
+{{end}}

@@ -1,0 +1,13 @@
+{{define "product_grid"}}
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+{{range .}}
+  <article class="bg-white border rounded p-4">
+    <h3 class="font-bold"><a href="/san-pham/{{.Slug}}">{{.Name}}</a></h3>
+    <p>{{.ShortSummary}}</p>
+    <p class="text-sm text-slate-600">Độ phủ: {{.CoverageRate}} m²/lít · {{.CoatingRole}}</p>
+  </article>
+{{else}}
+  <p>Chưa có sản phẩm.</p>
+{{end}}
+</div>
+{{end}}
