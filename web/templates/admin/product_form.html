@@ -1,102 +1,130 @@
 {{define "content"}}
-<h1 class="text-3xl font-bold mb-4">{{if .Data.IsNew}}Thêm sản phẩm{{else}}Sửa sản phẩm{{end}}</h1>
+<div class="admin-page-head">
+  <div>
+    <h1>{{if .Data.IsNew}}Thêm sản phẩm{{else}}Sửa sản phẩm{{end}}</h1>
+    <p class="admin-page-sub"><a href="/admin/products">← Quay lại danh sách sản phẩm</a></p>
+  </div>
+</div>
 {{if .Data.Error}}
-<div class="bg-red-100 border rounded p-4 mb-6" role="alert">{{.Data.Error}}</div>
+<div class="alert-error" role="alert">{{.Data.Error}}</div>
 {{end}}
-<form action="{{.Data.Action}}" method="post" class="bg-white border rounded p-6 flex flex-col gap-4 max-w-2xl">
+<form action="{{.Data.Action}}" method="post" class="admin-form">
   <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
-  <div>
-    <label class="block" for="pf-name">Tên sản phẩm *</label>
-    <input id="pf-name" name="name" type="text" required maxlength="200" value="{{.Data.Product.Name}}" class="border rounded px-3 py-2 w-full">
+  <fieldset class="form-section">
+    <legend>Thông tin cơ bản</legend>
+    <div class="field">
+      <label for="pf-name">Tên sản phẩm *</label>
+      <input id="pf-name" name="name" type="text" required maxlength="200" value="{{.Data.Product.Name}}">
+    </div>
+    <div class="field">
+      <label for="pf-slug">Slug *</label>
+      <input id="pf-slug" name="slug" type="text" required maxlength="200" value="{{.Data.Product.Slug}}">
+    </div>
+    <div class="field">
+      <label for="pf-sku">SKU *</label>
+      <input id="pf-sku" name="sku" type="text" required maxlength="100" value="{{.Data.Product.SKU}}">
+    </div>
+    <div class="field">
+      <label for="pf-category">Danh mục *</label>
+      <select id="pf-category" name="category_id" required>
+        {{range .Data.Categories}}
+        <option value="{{.ID}}" {{if eq .ID $.Data.Product.CategoryID}}selected{{end}}>{{.Name}}</option>
+        {{end}}
+      </select>
+    </div>
+  </fieldset>
+  <fieldset class="form-section">
+    <legend>Phân loại &amp; hiển thị</legend>
+    <div class="field">
+      <label for="pf-role">Vai trò phủ</label>
+      <input id="pf-role" name="coating_role" type="text" value="{{.Data.Product.CoatingRole}}">
+    </div>
+    <div class="field">
+      <label for="pf-finish">Độ bóng</label>
+      <input id="pf-finish" name="finish_type" type="text" value="{{.Data.Product.FinishType}}">
+    </div>
+    <div class="field">
+      <label for="pf-usage">Khu vực sử dụng</label>
+      <input id="pf-usage" name="usage_area" type="text" value="{{.Data.Product.UsageArea}}">
+    </div>
+    <div class="field">
+      <label for="pf-coverage">Độ phủ (m²/lít)</label>
+      <input id="pf-coverage" name="coverage_rate" type="number" step="any" min="0" value="{{.Data.Product.CoverageRate}}">
+    </div>
+    <div class="check-row">
+      <label><input type="checkbox" name="is_featured" {{if .Data.Product.IsFeatured}}checked{{end}}> Nổi bật</label>
+      <label><input type="checkbox" name="is_active" {{if .Data.Product.IsActive}}checked{{end}}> Đang hiển thị</label>
+    </div>
+  </fieldset>
+  <fieldset class="form-section">
+    <legend>Nội dung</legend>
+    <div class="field">
+      <label for="pf-summary">Tóm tắt</label>
+      <textarea id="pf-summary" name="short_summary" rows="3">{{.Data.Product.ShortSummary}}</textarea>
+    </div>
+    <div class="field">
+      <label for="pf-desc">Mô tả (HTML lưu trữ sẽ được hiển thị escaped ở trang công khai)</label>
+      <textarea id="pf-desc" name="description_html" rows="5">{{.Data.Product.DescriptionHTML}}</textarea>
+    </div>
+    <div class="field">
+      <label for="pf-guide">Hướng dẫn thi công</label>
+      <textarea id="pf-guide" name="application_guide_html" rows="5">{{.Data.Product.ApplicationGuideHTML}}</textarea>
+    </div>
+  </fieldset>
+  <fieldset class="form-section">
+    <legend>Hình ảnh &amp; tài liệu</legend>
+    <div class="field">
+      <label for="pf-thumb">Ảnh đại diện (URL)</label>
+      <input id="pf-thumb" name="thumbnail_url" type="text" value="{{.Data.Product.ThumbnailURL}}">
+      <p class="field-help">Muốn tải file mới lên, dùng mục “Tải lên hình ảnh / PDF” ở trang danh sách sản phẩm rồi dán URL /uploads/… vào đây.</p>
+    </div>
+    <div class="field">
+      <label for="pf-tds">TDS (URL file PDF)</label>
+      <input id="pf-tds" name="tds_file_url" type="text" value="{{.Data.Product.TDSFileURL}}">
+    </div>
+    <div class="field">
+      <label for="pf-msds">MSDS (URL file PDF)</label>
+      <input id="pf-msds" name="msds_file_url" type="text" value="{{.Data.Product.MSDSFileURL}}">
+    </div>
+  </fieldset>
+  <fieldset class="form-section">
+    <legend>Dữ liệu JSON</legend>
+    <div class="field">
+      <label for="pf-features">Tính năng (JSON, ví dụ ["Không mùi"])</label>
+      <textarea id="pf-features" name="features_json" rows="2">{{toJSON .Data.Product.Features}}</textarea>
+    </div>
+    <div class="field">
+      <label for="pf-packaging">Quy cách (JSON, ví dụ ["Lon 0.8L"])</label>
+      <textarea id="pf-packaging" name="packaging_json" rows="2">{{toJSON .Data.Product.Packaging}}</textarea>
+    </div>
+    <div class="field">
+      <label for="pf-specs">Thông số (JSON object)</label>
+      <textarea id="pf-specs" name="specs_json" rows="2">{{toJSON .Data.Product.Specs}}</textarea>
+    </div>
+    <div class="field">
+      <label for="pf-colors">Màu sắc (JSON array)</label>
+      <textarea id="pf-colors" name="colors_json" rows="2">{{toJSON .Data.Product.Colors}}</textarea>
+    </div>
+    <div class="field">
+      <label for="pf-images">Hình ảnh (JSON array các URL)</label>
+      <textarea id="pf-images" name="images_json" rows="2">{{toJSON .Data.Product.Images}}</textarea>
+    </div>
+    <p class="field-help">Để trống một ô JSON nghĩa là lưu giá trị rỗng cho ô đó — kiểm tra kỹ trước khi lưu.</p>
+  </fieldset>
+  <fieldset class="form-section">
+    <legend>SEO</legend>
+    <div class="field">
+      <label for="pf-seo-title">Tiêu đề SEO</label>
+      <input id="pf-seo-title" name="seo_title" type="text" value="{{.Data.Product.SEOTitle}}">
+    </div>
+    <div class="field">
+      <label for="pf-seo-desc">Mô tả SEO</label>
+      <textarea id="pf-seo-desc" name="seo_description" rows="2">{{.Data.Product.SEODescription}}</textarea>
+    </div>
+  </fieldset>
+  <div class="form-actions">
+    <button type="submit" class="btn btn-primary">Lưu sản phẩm</button>
+    <a href="/admin/products" class="btn btn-secondary">Hủy</a>
   </div>
-  <div>
-    <label class="block" for="pf-slug">Slug *</label>
-    <input id="pf-slug" name="slug" type="text" required maxlength="200" value="{{.Data.Product.Slug}}" class="border rounded px-3 py-2 w-full">
-  </div>
-  <div>
-    <label class="block" for="pf-sku">SKU *</label>
-    <input id="pf-sku" name="sku" type="text" required maxlength="100" value="{{.Data.Product.SKU}}" class="border rounded px-3 py-2 w-full">
-  </div>
-  <div>
-    <label class="block" for="pf-category">Danh mục *</label>
-    <select id="pf-category" name="category_id" required class="border rounded px-3 py-2 w-full">
-      {{range .Data.Categories}}
-      <option value="{{.ID}}" {{if eq .ID $.Data.Product.CategoryID}}selected{{end}}>{{.Name}}</option>
-      {{end}}
-    </select>
-  </div>
-  <div>
-    <label class="block" for="pf-role">Vai trò phủ</label>
-    <input id="pf-role" name="coating_role" type="text" value="{{.Data.Product.CoatingRole}}" class="border rounded px-3 py-2 w-full">
-  </div>
-  <div>
-    <label class="block" for="pf-finish">Độ bóng</label>
-    <input id="pf-finish" name="finish_type" type="text" value="{{.Data.Product.FinishType}}" class="border rounded px-3 py-2 w-full">
-  </div>
-  <div>
-    <label class="block" for="pf-usage">Khu vực sử dụng</label>
-    <input id="pf-usage" name="usage_area" type="text" value="{{.Data.Product.UsageArea}}" class="border rounded px-3 py-2 w-full">
-  </div>
-  <div>
-    <label class="block" for="pf-summary">Tóm tắt</label>
-    <textarea id="pf-summary" name="short_summary" rows="3" class="border rounded px-3 py-2 w-full">{{.Data.Product.ShortSummary}}</textarea>
-  </div>
-  <div>
-    <label class="block" for="pf-desc">Mô tả (HTML lưu trữ sẽ được hiển thị escaped ở trang công khai)</label>
-    <textarea id="pf-desc" name="description_html" rows="5" class="border rounded px-3 py-2 w-full">{{.Data.Product.DescriptionHTML}}</textarea>
-  </div>
-  <div>
-    <label class="block" for="pf-guide">Hướng dẫn thi công</label>
-    <textarea id="pf-guide" name="application_guide_html" rows="5" class="border rounded px-3 py-2 w-full">{{.Data.Product.ApplicationGuideHTML}}</textarea>
-  </div>
-  <div>
-    <label class="block" for="pf-coverage">Độ phủ (m²/lít)</label>
-    <input id="pf-coverage" name="coverage_rate" type="number" step="any" min="0" value="{{.Data.Product.CoverageRate}}" class="border rounded px-3 py-2 w-full">
-  </div>
-  <div>
-    <label class="block" for="pf-thumb">Ảnh đại diện (URL)</label>
-    <input id="pf-thumb" name="thumbnail_url" type="text" value="{{.Data.Product.ThumbnailURL}}" class="border rounded px-3 py-2 w-full">
-  </div>
-  <div>
-    <label class="block" for="pf-tds">TDS (URL file PDF)</label>
-    <input id="pf-tds" name="tds_file_url" type="text" value="{{.Data.Product.TDSFileURL}}" class="border rounded px-3 py-2 w-full">
-  </div>
-  <div>
-    <label class="block" for="pf-msds">MSDS (URL file PDF)</label>
-    <input id="pf-msds" name="msds_file_url" type="text" value="{{.Data.Product.MSDSFileURL}}" class="border rounded px-3 py-2 w-full">
-  </div>
-  <div>
-    <label class="block" for="pf-features">Tính năng (JSON, ví dụ ["Không mùi"])</label>
-    <textarea id="pf-features" name="features_json" rows="2" class="border rounded px-3 py-2 w-full">{{toJSON .Data.Product.Features}}</textarea>
-  </div>
-  <div>
-    <label class="block" for="pf-packaging">Quy cách (JSON, ví dụ ["Lon 0.8L"])</label>
-    <textarea id="pf-packaging" name="packaging_json" rows="2" class="border rounded px-3 py-2 w-full">{{toJSON .Data.Product.Packaging}}</textarea>
-  </div>
-  <div>
-    <label class="block" for="pf-specs">Thông số (JSON object)</label>
-    <textarea id="pf-specs" name="specs_json" rows="2" class="border rounded px-3 py-2 w-full">{{toJSON .Data.Product.Specs}}</textarea>
-  </div>
-  <div>
-    <label class="block" for="pf-colors">Màu sắc (JSON array)</label>
-    <textarea id="pf-colors" name="colors_json" rows="2" class="border rounded px-3 py-2 w-full">{{toJSON .Data.Product.Colors}}</textarea>
-  </div>
-  <div>
-    <label class="block" for="pf-images">Hình ảnh (JSON array các URL)</label>
-    <textarea id="pf-images" name="images_json" rows="2" class="border rounded px-3 py-2 w-full">{{toJSON .Data.Product.Images}}</textarea>
-  </div>
-  <div>
-    <label class="block" for="pf-seo-title">Tiêu đề SEO</label>
-    <input id="pf-seo-title" name="seo_title" type="text" value="{{.Data.Product.SEOTitle}}" class="border rounded px-3 py-2 w-full">
-  </div>
-  <div>
-    <label class="block" for="pf-seo-desc">Mô tả SEO</label>
-    <textarea id="pf-seo-desc" name="seo_description" rows="2" class="border rounded px-3 py-2 w-full">{{.Data.Product.SEODescription}}</textarea>
-  </div>
-  <div class="flex gap-6">
-    <label><input type="checkbox" name="is_featured" {{if .Data.Product.IsFeatured}}checked{{end}}> Nổi bật</label>
-    <label><input type="checkbox" name="is_active" {{if .Data.Product.IsActive}}checked{{end}}> Đang hiển thị</label>
-  </div>
-  <button type="submit" class="bg-lotus text-white rounded px-4 py-2">Lưu sản phẩm</button>
 </form>
 {{end}}

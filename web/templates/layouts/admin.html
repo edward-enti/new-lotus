@@ -5,26 +5,48 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Quản trị — Sơn Lotus</title>
 <link rel="stylesheet" href="/static/css/app.css">
+<link rel="stylesheet" href="/static/css/admin.css">
+<script defer src="/static/js/alpine.min.js"></script>
 </head>
-<body class="bg-slatemist text-slateink font-sans">
-<header class="bg-white shadow">
-  <nav class="max-w-6xl mx-auto px-4 py-4 flex flex-wrap items-center gap-4" aria-label="Điều hướng quản trị">
-    <a href="/admin" class="text-xl font-bold text-lotus">Sơn Lotus — Quản trị</a>
-    {{if .ShowNav}}
-    <a href="/admin/products" class="px-2 py-2">Sản phẩm</a>
-    <a href="/admin/articles" class="px-2 py-2">Bài viết</a>
-    <a href="/admin/inquiries" class="px-2 py-2">Yêu cầu khách hàng</a>
-    <a href="/" class="px-2 py-2">Xem trang công khai</a>
-    <form action="/admin/logout" method="post" class="ml-auto">
-      <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
-      <button type="submit" class="bg-white border rounded px-4 py-2">Đăng xuất</button>
-    </form>
-    {{end}}
-  </nav>
-</header>
-<main class="max-w-6xl mx-auto px-4 py-8">
+<body class="admin-body">
+{{if .ShowNav}}
+<div class="admin-shell" x-data="{ sidebarOpen: false, path: window.location.pathname }">
+  <div class="admin-backdrop" x-show="sidebarOpen" @click="sidebarOpen = false"></div>
+  <aside class="admin-sidebar" :class="sidebarOpen && 'is-open'" aria-label="Điều hướng quản trị">
+    <a href="/admin" class="admin-brand">
+      <span class="admin-brand-mark" aria-hidden="true">SL</span>
+      <span><span class="admin-brand-name">Sơn Lotus</span><span class="admin-brand-sub">Quản trị</span></span>
+    </a>
+    <nav class="admin-nav">
+      <a href="/admin" :class="{ 'is-active': path === '/admin' }"><span aria-hidden="true">▦</span> Tổng quan</a>
+      <a href="/admin/products" :class="{ 'is-active': path.startsWith('/admin/products') }"><span aria-hidden="true">▣</span> Sản phẩm</a>
+      <a href="/admin/articles" :class="{ 'is-active': path.startsWith('/admin/articles') }"><span aria-hidden="true">▤</span> Bài viết</a>
+      <a href="/admin/inquiries" :class="{ 'is-active': path.startsWith('/admin/inquiries') }"><span aria-hidden="true">✉</span> Yêu cầu khách hàng</a>
+      <a href="/"><span aria-hidden="true">↗</span> Xem trang công khai</a>
+    </nav>
+    <div class="admin-sidebar-foot">
+      <form action="/admin/logout" method="post">
+        <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
+        <button type="submit" class="btn btn-sidebar">Đăng xuất</button>
+      </form>
+    </div>
+  </aside>
+  <div class="admin-main">
+    <header class="admin-topbar">
+      <button type="button" class="admin-menu-btn" @click="sidebarOpen = !sidebarOpen" aria-label="Mở hoặc đóng menu">☰</button>
+      <p class="admin-topbar-title">Bảng điều khiển</p>
+      <span class="admin-account">Tài khoản quản trị</span>
+    </header>
+    <main class="admin-content">
+{{template "content" .}}
+    </main>
+  </div>
+</div>
+{{else}}
+<main class="admin-login-shell">
 {{template "content" .}}
 </main>
+{{end}}
 </body>
 </html>
 {{end}}

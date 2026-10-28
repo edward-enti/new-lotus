@@ -1,26 +1,46 @@
 {{define "content"}}
-<h1 class="text-3xl font-bold mb-4">Sản phẩm</h1>
-<p class="mb-6"><a href="/admin/products/new" class="bg-lotus text-white rounded px-4 py-2 inline-block">Thêm sản phẩm mới</a></p>
-<table class="bg-white border rounded w-full mb-10">
-  <thead><tr><th class="text-left p-2">Tên</th><th class="text-left p-2">Slug</th><th class="text-left p-2">Danh mục</th><th class="text-left p-2">Hiển thị</th><th class="text-left p-2"></th></tr></thead>
-  <tbody>
-  {{range .Data.Products}}
-    <tr class="border-t"><td class="p-2">{{.Name}}</td><td class="p-2">{{.Slug}}</td><td class="p-2">{{.CategoryName}}</td><td class="p-2">{{if .IsActive}}Có{{else}}Không{{end}}</td><td class="p-2"><a href="/admin/products/{{.ID}}/edit">Sửa</a></td></tr>
-  {{else}}
-    <tr><td class="p-2" colspan="5">Chưa có sản phẩm.</td></tr>
-  {{end}}
-  </tbody>
-</table>
-<section class="bg-white border rounded p-6 max-w-xl">
-  <h2 class="text-xl font-bold mb-4">Tải lên hình ảnh / PDF</h2>
-  <p class="mb-4 text-sm">Chỉ chấp nhận ảnh (.jpg, .jpeg, .png, .webp, .gif) và PDF, tối đa 10 MB mỗi file. File được lưu tại /uploads/ và phục vụ công khai.</p>
-  <form action="/admin/upload" method="post" enctype="multipart/form-data" class="flex flex-col gap-4">
+<div class="admin-page-head">
+  <div>
+    <h1>Sản phẩm</h1>
+    <p class="admin-page-sub">Tất cả sản phẩm, kể cả sản phẩm đang ẩn khỏi trang công khai.</p>
+  </div>
+  <a href="/admin/products/new" class="btn btn-primary">＋ Thêm sản phẩm mới</a>
+</div>
+<div x-data="{ q: '' }">
+  <div class="filter-bar">
+    <label for="prod-filter">Lọc nhanh trên trang</label>
+    <input id="prod-filter" type="search" x-model="q" placeholder="Gõ tên, slug hoặc danh mục…">
+    <p class="field-help">Chỉ lọc hiển thị trên trang này, không đổi dữ liệu trên máy chủ.</p>
+  </div>
+  <div class="table-wrap">
+  <table class="admin-table">
+    <thead><tr><th>Tên</th><th>Slug</th><th>Danh mục</th><th>Trạng thái</th><th></th></tr></thead>
+    <tbody>
+    {{range .Data.Products}}
+      <tr x-show="q === '' || $el.textContent.toLowerCase().includes(q.toLowerCase())">
+        <td><strong>{{.Name}}</strong>{{if .IsFeatured}} <span class="badge badge-amber">Nổi bật</span>{{end}}</td>
+        <td class="cell-mono">{{.Slug}}</td>
+        <td>{{.CategoryName}}</td>
+        <td>{{if .IsActive}}<span class="badge badge-green">Đang hiển thị</span>{{else}}<span class="badge badge-grey">Đã ẩn</span>{{end}}</td>
+        <td><a href="/admin/products/{{.ID}}/edit">Sửa</a></td>
+      </tr>
+    {{else}}
+      <tr><td class="admin-empty" colspan="5">Chưa có sản phẩm.</td></tr>
+    {{end}}
+    </tbody>
+  </table>
+  </div>
+</div>
+<section class="admin-card" style="margin-top:24px; max-width:640px;">
+  <h2>Tải lên hình ảnh / PDF</h2>
+  <p class="admin-page-sub">Chỉ chấp nhận ảnh (.jpg, .jpeg, .png, .webp, .gif) và PDF, tối đa 10 MB mỗi file. File được lưu tại /uploads/ và phục vụ công khai.</p>
+  <form action="/admin/upload" method="post" enctype="multipart/form-data" style="display:flex; flex-direction:column; gap:16px; margin-top:16px;">
     <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
-    <div>
-      <label class="block" for="upload-file">Chọn file</label>
-      <input id="upload-file" name="file" type="file" required class="border rounded px-3 py-2 w-full">
+    <div class="field">
+      <label for="upload-file">Chọn file</label>
+      <input id="upload-file" name="file" type="file" required>
     </div>
-    <button type="submit" class="bg-lotus text-white rounded px-4 py-2">Tải lên</button>
+    <div class="form-actions"><button type="submit" class="btn btn-primary">Tải lên</button></div>
   </form>
 </section>
 {{end}}

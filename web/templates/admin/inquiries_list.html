@@ -1,32 +1,46 @@
 {{define "content"}}
-<h1 class="text-3xl font-bold mb-4">Yêu cầu khách hàng</h1>
-<table class="bg-white border rounded w-full">
-  <thead><tr><th class="text-left p-2">Khách hàng</th><th class="text-left p-2">Điện thoại</th><th class="text-left p-2">Loại</th><th class="text-left p-2">Nội dung</th><th class="text-left p-2">Trạng thái</th><th class="text-left p-2"></th></tr></thead>
-  <tbody>
-  {{range .Data.Inquiries}}
-    <tr class="border-t">
-      <td class="p-2">{{.CustomerName}}</td>
-      <td class="p-2">{{.Phone}}</td>
-      <td class="p-2">{{.InquiryType}}</td>
-      <td class="p-2">{{.Message}}</td>
-      <td class="p-2">{{.Status}}</td>
-      <td class="p-2">
-        <form action="/admin/inquiries/{{.ID}}/status" method="post" class="flex gap-2">
-          <input type="hidden" name="csrf_token" value="{{$.CSRFToken}}">
-          <label class="sr-only" for="inq-status-{{.ID}}">Trạng thái mới</label>
-          <select id="inq-status-{{.ID}}" name="status" class="border rounded px-2 py-2">
-            <option value="new" {{if eq .Status "new"}}selected{{end}}>Mới</option>
-            <option value="contacted" {{if eq .Status "contacted"}}selected{{end}}>Đã liên hệ</option>
-            <option value="quoted" {{if eq .Status "quoted"}}selected{{end}}>Đã báo giá</option>
-            <option value="closed" {{if eq .Status "closed"}}selected{{end}}>Đã đóng</option>
-          </select>
-          <button type="submit" class="bg-lotus text-white rounded px-3 py-2">Cập nhật</button>
-        </form>
-      </td>
-    </tr>
-  {{else}}
-    <tr><td class="p-2" colspan="6">Chưa có yêu cầu nào.</td></tr>
-  {{end}}
-  </tbody>
-</table>
+<div class="admin-page-head">
+  <div>
+    <h1>Yêu cầu khách hàng</h1>
+    <p class="admin-page-sub">Mới nhất lên trước. Đổi trạng thái tại từng dòng — thay đổi lưu ngay.</p>
+  </div>
+</div>
+<div x-data="{ q: '' }">
+  <div class="filter-bar">
+    <label for="inq-filter">Lọc nhanh trên trang</label>
+    <input id="inq-filter" type="search" x-model="q" placeholder="Gõ tên khách, số điện thoại hoặc nội dung…">
+    <p class="field-help">Chỉ lọc hiển thị trên trang này, không đổi dữ liệu trên máy chủ.</p>
+  </div>
+  <div class="table-wrap">
+  <table class="admin-table">
+    <thead><tr><th>Khách hàng</th><th>Điện thoại</th><th>Loại</th><th>Nội dung</th><th>Trạng thái</th><th></th></tr></thead>
+    <tbody>
+    {{range .Data.Inquiries}}
+      <tr x-show="q === '' || $el.textContent.toLowerCase().includes(q.toLowerCase())">
+        <td><strong>{{.CustomerName}}</strong></td>
+        <td>{{.Phone}}</td>
+        <td>{{.InquiryType}}</td>
+        <td class="cell-msg">{{.Message}}</td>
+        <td>{{if eq .Status "new"}}<span class="badge badge-amber">Mới</span>{{else if eq .Status "contacted"}}<span class="badge badge-green">Đã liên hệ</span>{{else if eq .Status "quoted"}}<span class="badge badge-green">Đã báo giá</span>{{else if eq .Status "closed"}}<span class="badge badge-grey">Đã đóng</span>{{else}}{{.Status}}{{end}}</td>
+        <td>
+          <form action="/admin/inquiries/{{.ID}}/status" method="post" class="inline-form">
+            <input type="hidden" name="csrf_token" value="{{$.CSRFToken}}">
+            <label class="sr-only" for="inq-status-{{.ID}}">Trạng thái mới</label>
+            <select id="inq-status-{{.ID}}" name="status">
+              <option value="new" {{if eq .Status "new"}}selected{{end}}>Mới</option>
+              <option value="contacted" {{if eq .Status "contacted"}}selected{{end}}>Đã liên hệ</option>
+              <option value="quoted" {{if eq .Status "quoted"}}selected{{end}}>Đã báo giá</option>
+              <option value="closed" {{if eq .Status "closed"}}selected{{end}}>Đã đóng</option>
+            </select>
+            <button type="submit" class="btn btn-primary btn-sm">Cập nhật</button>
+          </form>
+        </td>
+      </tr>
+    {{else}}
+      <tr><td class="admin-empty" colspan="6">Chưa có yêu cầu nào.</td></tr>
+    {{end}}
+    </tbody>
+  </table>
+  </div>
+</div>
 {{end}}
